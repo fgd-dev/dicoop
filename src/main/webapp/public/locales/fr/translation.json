@@ -112,6 +112,9 @@
   },
   "cookies": {
     "button": "Accepter",
-    "message": "Ce site web utilise des cookies pour améliorer l'expérience de l'utilisateur. Ces cookies sont indispensables au bon fonctionnement du site web et ne peuvent pas être désactivés. Ils ne servent qu'à sauvegarder vos préférences de langue de l'interface et vos données en cours de modification pour ne pas les perdre en cas de problème. Vos données vous appartiennent et ne sont pas sauvegardées sur le serveur."
+    "message1": "Ce site web utilise des cookies pour améliorer l'expérience de l'utilisateur.",
+    "message2": "Ces cookies sont indispensables au bon fonctionnement du site web et ne peuvent pas être désactivés.",
+    "message3": "Ils ne servent qu'à sauvegarder vos préférences de langue de l'interface et vos données en cours de modification pour ne pas les perdre en cas de problème.",
+    "message4": "Vos données vous appartiennent et ne sont pas sauvegardées sur le serveur."
   }
 }

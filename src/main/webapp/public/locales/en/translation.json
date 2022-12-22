@@ -112,6 +112,9 @@
   },
   "cookies": {
     "button": "Accept",
-    "message": "This website uses cookies to enhance the user experience.\nThese cookies are essential for the proper functioning of the website and cannot be disabled. They are only used to save your interface language preferences and your data being modified so that they are not lost in case of a problem. Your data belongs to you and is not saved on the server."
+    "message1": "This website uses cookies to enhance the user experience.",
+    "message2": "These cookies are essential for the proper functioning of the website and cannot be disabled.",
+    "message3": "They are only used to save your interface language preferences and your data being modified so that they are not lost in case of a problem.",
+    "message4": "Your data belongs to you and is not saved on the server."
   }
 }

@@ -562,7 +562,14 @@ function App() {
         }
       </AppShell>
       <CookieConsent buttonText={t("cookies.button")}>
-        {t("cookies.message")}
+        <span>{t("cookies.message1")}</span>
+        <br />
+        <span>{t("cookies.message2")}</span>
+        <br />
+        <span>{t("cookies.message3")}</span>
+        <br />
+        <span>{t("cookies.message4")}</span>
+        <br />
       </CookieConsent>
     </>
   );
