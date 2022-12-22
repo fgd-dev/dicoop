@@ -46,6 +46,7 @@ import { ValidationResult } from "./Persistence/ExcelValidation";
 import SolutionSettingsForm from "./Solution/SolutionSettingsForm";
 import SolutionTable from "./Solution/SolutionTable";
 import { buildModel, buildSolution, ClingoResult } from "./Solver/clingo";
+import CookieConsent from "react-cookie-consent";
 
 declare const clingo: any;
 
@@ -133,7 +134,7 @@ function App() {
     key: "settings",
     defaultValue: DEFAULT_SETTINGS_STATE,
     deserialize: (localStorageValue: string): SettingsState => {
-      if(!localStorageValue) return DEFAULT_SETTINGS_STATE;
+      if (!localStorageValue) return DEFAULT_SETTINGS_STATE;
       const state = JSON.parse(localStorageValue) as SettingsState;
       // We need to check some values if local state is already defined with missing new ones
       if (!state.committeeMeetingSize) {
@@ -415,156 +416,155 @@ function App() {
   };
 
   return (
-    <AppShell
-      padding="md"
-      navbar={
-        <Navbar width={{ base: 300 }} height={500} p="xs">
-          {
-            <>
-              <div>
-                <input
-                  style={{ display: "none" }}
-                  accept=".xlsx"
-                  ref={inputFile}
-                  onChange={handleFileOpened}
-                  type="file"
-                />
-                {isSolving ? (
-                  <Button onClick={stopSolving}>{t("controls.stop")}</Button>
-                ) : (
-                  <Group position="left" direction="row">
-                    <Button onClick={openFileDialog}>
-                      {t("controls.import")}
-                    </Button>
-                    <Button onClick={dataExport}>{t("controls.export")}</Button>
-                    <Button onClick={startSolving}>
-                      {t("controls.solve")}
-                    </Button>
-                    <Button type="button" color="red" onClick={resetAll}>
-                      {t("controls.reset")}
+    <>
+      <AppShell
+        padding="md"
+        navbar={
+          <Navbar width={{ base: 300 }} height={500} p="xs">
+            <div>
+              <input
+                style={{ display: "none" }}
+                accept=".xlsx"
+                ref={inputFile}
+                onChange={handleFileOpened}
+                type="file"
+              />
+              {isSolving ? (
+                <Button onClick={stopSolving}>{t("controls.stop")}</Button>
+              ) : (
+                <Group position="left" direction="row">
+                  <Button onClick={openFileDialog}>
+                    {t("controls.import")}
+                  </Button>
+                  <Button onClick={dataExport}>{t("controls.export")}</Button>
+                  <Button onClick={startSolving}>{t("controls.solve")}</Button>
+                  <Button type="button" color="red" onClick={resetAll}>
+                    {t("controls.reset")}
+                  </Button>
+                </Group>
+              )}
+            </div>
+            <div>
+              <RadioGroup
+                value={solver}
+                onChange={setSolver}
+                label="Solver"
+                spacing="xs"
+                size="xs"
+              >
+                <Radio value="optaplanner" label="OptaPlanner" />
+                <Radio value="clingo" label="Clingo" />
+              </RadioGroup>
+            </div>
+            <Divider my="sm" />
+            <div>
+              <b>{t("status.label")}:</b>{" "}
+              {t(`status.${committeeSolution.solverStatus}`)}
+              <br />
+              {debug && committeeSolution.id && (
+                <div>
+                  <b>{t("status.id")}:</b> {committeeSolution.id}
+                </div>
+              )}
+              {committeeSolution.score && (
+                <div>
+                  <b>{t("status.scoreLabel")}:</b> {showScore()}
+                </div>
+              )}
+              {committeeSolution.scoreExplanation && (
+                <>
+                  <Drawer
+                    opened={showMore}
+                    onClose={() => setShowMore(false)}
+                    title={t("status.scoreExplanation")}
+                    padding="xl"
+                    size="75%"
+                    position="right"
+                  >
+                    <textarea
+                      style={{
+                        width: "100%",
+                        height: "92vh",
+                        display: "block",
+                      }}
+                      value={committeeSolution.scoreExplanation}
+                      readOnly
+                    />
+                  </Drawer>
+                  <Space h="md" />
+                  <Group position="left">
+                    <Button onClick={() => setShowMore(true)}>
+                      {t("status.openScoreExplanation")}
                     </Button>
                   </Group>
-                )}
-              </div>
-              <div>
-                <RadioGroup
-                  value={solver}
-                  onChange={setSolver}
-                  label="Solver"
-                  spacing="xs"
-                  size="xs"
-                >
-                  <Radio value="optaplanner" label="OptaPlanner" />
-                  <Radio value="clingo" label="Clingo" />
-                </RadioGroup>
-              </div>
-              <Divider my="sm" />
-              <div>
-                <b>{t("status.label")}:</b>{" "}
-                {t(`status.${committeeSolution.solverStatus}`)}
-                <br />
-                {debug && committeeSolution.id && (
-                  <div>
-                    <b>{t("status.id")}:</b> {committeeSolution.id}
-                  </div>
-                )}
-                {committeeSolution.score && (
-                  <div>
-                    <b>{t("status.scoreLabel")}:</b> {showScore()}
-                  </div>
-                )}
-                {committeeSolution.scoreExplanation && (
-                  <>
-                    <Drawer
-                      opened={showMore}
-                      onClose={() => setShowMore(false)}
-                      title={t("status.scoreExplanation")}
-                      padding="xl"
-                      size="75%"
-                      position="right"
-                    >
-                      <textarea
-                        style={{
-                          width: "100%",
-                          height: "92vh",
-                          display: "block",
-                        }}
-                        value={committeeSolution.scoreExplanation}
-                        readOnly
-                      />
-                    </Drawer>
-                    <Space h="md" />
-                    <Group position="left">
-                      <Button onClick={() => setShowMore(true)}>
-                        {t("status.openScoreExplanation")}
-                      </Button>
-                    </Group>
-                  </>
-                )}
-              </div>
-            </>
-          }
-        </Navbar>
-      }
-      header={
-        <Header height={120} p="xs">
-          <div
-            style={{ display: "flex", alignItems: "center", height: "100%" }}
-          >
-            <DicoopLogo className="dicoop-logo" />
-            <div className="dicoop-title">
-              <h1>{t("appName")}</h1>
-              <span>
-                <Trans i18nKey={"appSubTitle"}></Trans>
-              </span>
+                </>
+              )}
             </div>
-            <HeaderMenu />
-          </div>
-        </Header>
-      }
-      styles={(theme) => ({
-        main: {
-          backgroundColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-        },
-      })}
-    >
-      {
-        <>
-          <SolutionSettingsForm
-            settingsState={settingsState}
-            setSettingsState={setSettingsState}
-            isSolving={isSolving}
-          />
-          <Space h="xl" />
-          <Tabs active={activeTabKey} onTabChange={setActiveTabKey}>
-            <Tab label={t("tabs.participants")}>
-              <ParticipantsTable
-                participants={participants}
-                updateParticipant={updateParticipant}
-                deleteParticipant={deleteParticipant}
-                distances={distanceMatrix}
-              />
-            </Tab>
-            <Tab label={t("tabs.distances")}>
-              <DistancesTable
-                distanceMatrix={distanceMatrix}
-                updateDistance={updateDistance}
-              />
-            </Tab>
-            <Tab label={t("tabs.history")}>
-              <HistoryTable history={history} />
-            </Tab>
-            <Tab label={t("tabs.solution")} disabled={solutionTabDisabled}>
-              <SolutionTable committees={committeeSolution.committees} />
-            </Tab>
-          </Tabs>
-          <ErrorMessage />
-        </>
-      }
-    </AppShell>
+          </Navbar>
+        }
+        header={
+          <Header height={120} p="xs">
+            <div
+              style={{ display: "flex", alignItems: "center", height: "100%" }}
+            >
+              <DicoopLogo className="dicoop-logo" />
+              <div className="dicoop-title">
+                <h1>{t("appName")}</h1>
+                <span>
+                  <Trans i18nKey={"appSubTitle"}></Trans>
+                </span>
+              </div>
+              <HeaderMenu />
+            </div>
+          </Header>
+        }
+        styles={(theme) => ({
+          main: {
+            backgroundColor:
+              theme.colorScheme === "dark"
+                ? theme.colors.dark[8]
+                : theme.colors.gray[0],
+          },
+        })}
+      >
+        {
+          <>
+            <SolutionSettingsForm
+              settingsState={settingsState}
+              setSettingsState={setSettingsState}
+              isSolving={isSolving}
+            />
+            <Space h="xl" />
+            <Tabs active={activeTabKey} onTabChange={setActiveTabKey}>
+              <Tab label={t("tabs.participants")}>
+                <ParticipantsTable
+                  participants={participants}
+                  updateParticipant={updateParticipant}
+                  deleteParticipant={deleteParticipant}
+                  distances={distanceMatrix}
+                />
+              </Tab>
+              <Tab label={t("tabs.distances")}>
+                <DistancesTable
+                  distanceMatrix={distanceMatrix}
+                  updateDistance={updateDistance}
+                />
+              </Tab>
+              <Tab label={t("tabs.history")}>
+                <HistoryTable history={history} />
+              </Tab>
+              <Tab label={t("tabs.solution")} disabled={solutionTabDisabled}>
+                <SolutionTable committees={committeeSolution.committees} />
+              </Tab>
+            </Tabs>
+            <ErrorMessage />
+          </>
+        }
+      </AppShell>
+      <CookieConsent buttonText={t("cookies.button")}>
+        {t("cookies.message")}
+      </CookieConsent>
+    </>
   );
 }
 
