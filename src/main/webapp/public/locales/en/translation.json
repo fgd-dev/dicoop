@@ -8,16 +8,18 @@
         "solverRefreshingError": "Error while refreshing the solution"
     },
     "settingsMenu": {
-        "title": "Settings",
-        "language": "Language",
-        "sourceCode": "Source code",
-        "about": "About",
-        "aboutText1": "DICOOP (DIstributing evaluators in CertificatiOn Organized by Peers) is a quasi-solver for a class of scheduling problems, whose problem is to identify and allocate N peer reviewers to N peer reviews, knowing that other types of reviewers may accompany them (non-pro and external), and so that there is no reciprocity in the review, the team of reviewers has a set of expected skills, and the reviewers change from one year to the next for the same peer in order to maximize knowledge exchange and reduce the risk of tacit agreements. In the interest of fairness among evaluators, distance-to-go options can be chosen.",
-        "aboutText2": "Ideal solutions to these problems can be extremely slow, but approximations are fast and often good enough for real-world purposes.",
-        "aboutText3": "This application was conceived in the framework of a collaboration between different researchers: Sylvaine Lemeilleur and Nicolas Paget (CIRAD, Montpellier, France), Abdallah Saffidine and Cecilia Xifei Ni (Computer Science and Engineering, University of New South Wales, Sydney, Australia) and Nathanaël Barrot (Kyushu University, Japan), as well as the computer development realized by Fabrice Dominguez (fgd-dev).",
-        "aboutText4": "It follows various requests from civil society organizations in Morocco and France and has received support from the French Development Agency under the project \"Institutional Innovations for Organic Agriculture in Africa\", coordinated by Afronet and in which CIRAD is a partner.",
-        "aboutText5": "It led to a first scientific communication: Barrot, N., Lemeilleur, S., Paget, N., Saffidine, A., (2020). Peer Reviewing in Participatory Guarantee Systems: Modelisation and Algorithmic Aspects. Presented at the Nineteenth International Conference on Autonomous Agents and Multi-Agent Systems, Auckland, New Zealand.",
-        "aboutText6": "The source code of this application is available on GitHub."
+      "title": "Settings",
+      "language": "Language",
+      "sourceCode": "Source code",
+      "guide": "User guide",
+      "guideFileName": "/guides/USER_GUIDE_FOR_DICOOP.pdf",
+      "about": "About",
+      "aboutText1": "DICOOP (DIstributing evaluators in CertificatiOn Organized by Peers) is a quasi-solver for a class of scheduling problems, whose problem is to identify and allocate N peer reviewers to N peer reviews, knowing that other types of reviewers may accompany them (non-pro and external), and so that there is no reciprocity in the review, the team of reviewers has a set of expected skills, and the reviewers change from one year to the next for the same peer in order to maximize knowledge exchange and reduce the risk of tacit agreements. In the interest of fairness among evaluators, distance-to-go options can be chosen.",
+      "aboutText2": "Ideal solutions to these problems can be extremely slow, but approximations are fast and often good enough for real-world purposes.",
+      "aboutText3": "This application was conceived in the framework of a collaboration between different researchers: Sylvaine Lemeilleur and Nicolas Paget (CIRAD, Montpellier, France), Abdallah Saffidine and Cecilia Xifei Ni (Computer Science and Engineering, University of New South Wales, Sydney, Australia) and Nathanaël Barrot (Kyushu University, Japan), as well as the computer development realized by Fabrice Dominguez (fgd-dev).",
+      "aboutText4": "It follows various requests from civil society organizations in Morocco and France and has received support from the French Development Agency under the project \"Institutional Innovations for Organic Agriculture in Africa\", coordinated by Afronet and in which CIRAD is a partner.",
+      "aboutText5": "It led to a first scientific communication: Barrot, N., Lemeilleur, S., Paget, N., Saffidine, A., (2020). Peer Reviewing in Participatory Guarantee Systems: Modelisation and Algorithmic Aspects. Presented at the Nineteenth International Conference on Autonomous Agents and Multi-Agent Systems, Auckland, New Zealand.",
+      "aboutText6": "The source code of this application is available on GitHub."
     },
     "controls": {
         "import": "Import",

@@ -8,16 +8,18 @@
         "solverRefreshingError": "Erreur lors du rafraîchissement du solveur"
     },
     "settingsMenu": {
-        "title": "Paramètres",
-        "language": "Langue",
-        "sourceCode": "Code source",
-        "about": "À propos",
-        "aboutText1": "DICOOP (DIstribuer les évaluateurs dans une CertificatiOn Organisée par les Pairs) est un quasi-solveur pour une classe de problèmes d'ordonnancement, dont le problème est d’identifier et répartir N pairs évaluateurs sur N évaluations de pairs, sachant que d'autres types d'évaluateurs peuvent les accompagner (non-pro et externes), de telle sorte qu'il n'y ait pas de réciprocité dans l'évaluation, que l'équipe d'évaluateurs ait un ensemble de compétences attendues et que les évaluateurs changent d'une année sur l'autre pour chaque pair évalué afin de maximiser les échanges de connaissances dans la rencontre entre pairs et réduire les risques d’ententes tacites. Dans un souci d'équité entre évaluateurs, des options de distance à parcourir peuvent être choisies.",
-        "aboutText2": "Identifier une solution idéale peut être extrêmement lent, mais en trouver une approximation est rapide et souvent assez bonne pour les besoins du monde réel.",
-        "aboutText3": "Cette application a été pensée dans le cadre d’une collaboration entre différents chercheurs: Sylvaine Lemeilleur et Nicolas Paget (CIRAD, Montpellier, France), Abdallah Saffidine et Cecilia Xifei Ni (Computer Science and Engineering, University of New South Wales, Sydney, Australia) et Nathanaël Barrot (Kyushu University, Japon), ainsi que du développement informatique réalisé par Fabrice Dominguez (fgd-dev).",
-        "aboutText4": "Elle fait suite à différentes demandes d’organisations de la société civile au Maroc et en France et a bénéficié du soutien de l’Agence Française de développement au titre du projet «Innovations Institutionnelles pour l’Agriculture Biologique en Afrique », coordonné par Afronet et dont le CIRAD est partenaire.",
-        "aboutText5": "Elle a donné lieu à une première communication scientifique : Barrot, N., Lemeilleur, S., Paget, N., Saffidine, A., (2020). Peer Reviewing in Participatory Guarantee Systems: Modelisation and Algorithmic Aspects. Presented at the Nineteenth International Conference on Autonomous Agents and Multi-Agent Systems, Auckland, New Zealand.",
-        "aboutText6": "Le code source de cette application est disponible sur GitHub."
+      "title": "Paramètres",
+      "language": "Langue",
+      "sourceCode": "Code source",
+      "guide": "Guide d'utilisation",
+      "guideFileName": "/guides/GUIDE_UTILISATEUR_DICOOP.pdf",
+      "about": "À propos",
+      "aboutText1": "DICOOP (DIstribuer les évaluateurs dans une CertificatiOn Organisée par les Pairs) est un quasi-solveur pour une classe de problèmes d'ordonnancement, dont le problème est d’identifier et répartir N pairs évaluateurs sur N évaluations de pairs, sachant que d'autres types d'évaluateurs peuvent les accompagner (non-pro et externes), de telle sorte qu'il n'y ait pas de réciprocité dans l'évaluation, que l'équipe d'évaluateurs ait un ensemble de compétences attendues et que les évaluateurs changent d'une année sur l'autre pour chaque pair évalué afin de maximiser les échanges de connaissances dans la rencontre entre pairs et réduire les risques d’ententes tacites. Dans un souci d'équité entre évaluateurs, des options de distance à parcourir peuvent être choisies.",
+      "aboutText2": "Identifier une solution idéale peut être extrêmement lent, mais en trouver une approximation est rapide et souvent assez bonne pour les besoins du monde réel.",
+      "aboutText3": "Cette application a été pensée dans le cadre d’une collaboration entre différents chercheurs: Sylvaine Lemeilleur et Nicolas Paget (CIRAD, Montpellier, France), Abdallah Saffidine et Cecilia Xifei Ni (Computer Science and Engineering, University of New South Wales, Sydney, Australia) et Nathanaël Barrot (Kyushu University, Japon), ainsi que du développement informatique réalisé par Fabrice Dominguez (fgd-dev).",
+      "aboutText4": "Elle fait suite à différentes demandes d’organisations de la société civile au Maroc et en France et a bénéficié du soutien de l’Agence Française de développement au titre du projet «Innovations Institutionnelles pour l’Agriculture Biologique en Afrique », coordonné par Afronet et dont le CIRAD est partenaire.",
+      "aboutText5": "Elle a donné lieu à une première communication scientifique : Barrot, N., Lemeilleur, S., Paget, N., Saffidine, A., (2020). Peer Reviewing in Participatory Guarantee Systems: Modelisation and Algorithmic Aspects. Presented at the Nineteenth International Conference on Autonomous Agents and Multi-Agent Systems, Auckland, New Zealand.",
+      "aboutText6": "Le code source de cette application est disponible sur GitHub."
     },
     "controls": {
         "import": "Importer",

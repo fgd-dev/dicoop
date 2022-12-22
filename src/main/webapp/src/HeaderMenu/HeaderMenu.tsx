@@ -1,5 +1,10 @@
 import { ActionIcon, Center, Group, Menu, Modal } from "@mantine/core";
-import { GearIcon, MarkGithubIcon, QuestionIcon } from "@primer/octicons-react";
+import {
+  BookIcon,
+  GearIcon,
+  MarkGithubIcon,
+  QuestionIcon,
+} from "@primer/octicons-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -29,6 +34,16 @@ export default function HeaderMenu() {
             <QuestionIcon size={26} />
           </Center>
         </button>
+        <a
+          href={t("settingsMenu.guideFileName")}
+          target="_blank"
+          rel="noreferrer"
+          title={t("settingsMenu.guide")}
+        >
+          <Center style={centerIconStyle}>
+            <BookIcon size={26} />
+          </Center>
+        </a>
         <a
           href="https://github.com/fgd-dev/dicoop"
           target="_blank"
