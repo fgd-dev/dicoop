@@ -11,6 +11,7 @@ import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty
 import org.optaplanner.core.api.domain.solution.PlanningScore;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.domain.solution.ProblemFactCollectionProperty;
+import org.optaplanner.core.api.domain.solution.ProblemFactProperty;
 import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
 import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore;
 import org.optaplanner.core.api.solver.SolverStatus;
@@ -22,6 +23,9 @@ public class CommitteeSolution {
 
     @PlanningId
     public UUID id;
+
+    @ProblemFactProperty
+    public Settings settings;
 
     @PlanningEntityCollectionProperty
     @JsonIgnore
@@ -55,6 +59,7 @@ public class CommitteeSolution {
 
     public CommitteeSolution(UUID id, SolverOptions options) {
         this.id = id;
+        this.settings = options.settings;
         this.persons = options.participants;
 
         // verify that all persons have a unique id

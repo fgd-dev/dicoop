@@ -8,14 +8,29 @@ public class TimeSlot implements Comparable<TimeSlot> {
     @PlanningId
     public String name;
 
+    private Settings settings;
+
     private static final Comparator<TimeSlot> COMPARATOR = Comparator.comparing(ts -> ts.name);
 
     public TimeSlot() {
         // No-arg constructor required for Hibernate and OptaPlanner
     }
 
-    public TimeSlot(String name) {
+    public TimeSlot(String name, Settings settings) {
         this.name = name;
+        this.settings = settings;
+    }
+
+    public static TimeSlot copyAndSetSettings(TimeSlot t, Settings settings) {
+        return new TimeSlot(t.name, settings);
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
+    public boolean isNumberOfCommitteesInRange(int nbCommittees) {
+        return settings.committeeMeetingSize.contains(nbCommittees);
     }
 
     @Override

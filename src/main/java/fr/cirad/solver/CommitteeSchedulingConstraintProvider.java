@@ -9,6 +9,8 @@ import org.optaplanner.core.api.score.stream.ConstraintFactory;
 import org.optaplanner.core.api.score.stream.ConstraintProvider;
 import fr.cirad.domain.Committee;
 import fr.cirad.domain.CommitteeAssignment;
+import fr.cirad.domain.Settings;
+import fr.cirad.domain.TimeSlot;
 
 public class CommitteeSchedulingConstraintProvider implements ConstraintProvider {
 
@@ -27,7 +29,8 @@ public class CommitteeSchedulingConstraintProvider implements ConstraintProvider
                                 inspectionRotation(constraintFactory),
                                 inspectionFollowUp(constraintFactory), vetoes(constraintFactory),
                                 travelling(constraintFactory),
-                                maxNumberOfInspections(constraintFactory)};
+                                maxNumberOfInspections(constraintFactory),
+                                badCommitteeNumberByTimeSlotRange(constraintFactory)};
         }
 
         private Constraint selfConflict(ConstraintFactory constraintFactory) {
@@ -140,6 +143,15 @@ public class CommitteeSchedulingConstraintProvider implements ConstraintProvider
                                 .filter((person, nb) -> person.maxNumberOfInspections > nb)
                                 .penalize(HardMediumSoftScore.ONE_HARD)
                                 .asConstraint("Max number of inspections");
+        }
+
+        private Constraint badCommitteeNumberByTimeSlotRange(ConstraintFactory constraintFactory) {
+                return constraintFactory.forEach(Committee.class).join(Settings.class)
+                                .map((c, s) -> TimeSlot.copyAndSetSettings(c.timeSlot, s))
+                                .groupBy(t -> t, count())
+                                .filter((t, nb) -> !t.isNumberOfCommitteesInRange(nb))
+                                .penalize(HardMediumSoftScore.ONE_HARD)
+                                .asConstraint("Number of committees for a given timeslot");
         }
 
 }
