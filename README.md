@@ -10,6 +10,11 @@ It follows various requests from civil society organizations in Morocco and Fran
 
 It led to a first scientific communication: Barrot, N., Lemeilleur, S., Paget, N., Saffidine, A., (2020). Peer Reviewing in Participatory Guarantee Systems: Modelisation and Algorithmic Aspects. Presented at the Nineteenth International Conference on Autonomous Agents and Multi-Agent Systems, Auckland, New Zealand.
 
+## Running the application with docker
+
+For instance if you want to run Dicoop locally for the version v1.13.6
+docker run -p 8080:8080 fgd99/dicoop:v1.13.6
+
 ## Technical points
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
