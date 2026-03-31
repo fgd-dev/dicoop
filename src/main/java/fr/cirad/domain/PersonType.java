@@ -1,7 +1,7 @@
 package fr.cirad.domain;
 
 import java.util.Comparator;
-import org.optaplanner.core.api.domain.lookup.PlanningId;
+import ai.timefold.solver.core.api.domain.lookup.PlanningId;
 
 public class PersonType implements Comparable<PersonType> {
 

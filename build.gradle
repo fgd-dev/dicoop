@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'io.quarkus'
-    id 'org.siouan.frontend-jdk11'
+    id 'io.quarkus' version '3.34.1'
+    id 'org.siouan.frontend-jdk21' version '9.1.0'
 }
 
 repositories {
@@ -10,9 +10,8 @@ repositories {
 }
 
 dependencies {
-    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
-    implementation enforcedPlatform("${quarkusPlatformGroupId}:quarkus-optaplanner-bom:${quarkusPlatformVersion}")
-    implementation 'org.optaplanner:optaplanner-quarkus'
+    implementation enforcedPlatform("io.quarkus.platform:quarkus-bom:3.34.1")
+    implementation 'ai.timefold.solver:timefold-solver-quarkus:1.21.0'
     implementation 'io.quarkus:quarkus-smallrye-openapi'
     implementation 'io.quarkus:quarkus-resteasy'
     implementation 'io.quarkus:quarkus-resteasy-jackson'
@@ -22,21 +21,27 @@ dependencies {
 
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
-    testImplementation 'org.optaplanner:optaplanner-test'
-    testImplementation 'org.optaplanner:optaplanner-quarkus-benchmark'
+    testImplementation 'ai.timefold.solver:timefold-solver-test:1.21.0'
+    testImplementation 'ai.timefold.solver:timefold-solver-quarkus-benchmark:1.21.0'
 }
 
 configurations.implementation {
-    exclude group: 'org.optaplanner', module: 'optaplanner-constraint-drl'
-    exclude group: 'org.optaplanner', module: 'optaplanner-constraint-streams-drools'
+    exclude group: 'ai.timefold.solver', module: 'timefold-solver-constraint-drl'
+    exclude group: 'ai.timefold.solver', module: 'timefold-solver-constraint-streams-drools'
 }
 
 group 'fr.cirad'
 version '1.13.0'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+frontend {
+    nodeVersion = '20.18.1'
+    packageJsonDirectory = file('./src/main/webapp')
+    assembleScript = 'run prod'
 }
 
 compileJava {
@@ -49,7 +54,7 @@ compileTestJava {
 }
 
 frontend {
-    nodeVersion = '16.16.0'
+    nodeVersion = '22.14.0'
     packageJsonDirectory = file('./src/main/webapp')
     assembleScript = 'run prod'
 }

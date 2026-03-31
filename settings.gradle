@@ -5,8 +5,14 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
-        id "${quarkusPluginId}" version "${quarkusPluginVersion}"
-        id 'org.siouan.frontend-jdk11' version '5.2.0'
+        id 'org.siouan.frontend-jdk21' version '9.1.0'
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == 'io.quarkus') {
+                useModule("io.quarkus:io.quarkus.gradle.plugin:${requested.version}")
+            }
+        }
     }
 }
 rootProject.name='dicoop'
