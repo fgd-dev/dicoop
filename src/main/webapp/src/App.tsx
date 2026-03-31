@@ -4,12 +4,10 @@ import {
   Divider,
   Drawer,
   Group,
-  Header,
   Navbar,
   Radio,
   RadioGroup,
   Space,
-  Tab,
   Tabs,
 } from "@mantine/core";
 import { useLocalStorage, useSetState } from "@mantine/hooks";
@@ -536,26 +534,26 @@ function App() {
             />
             <Space h="xl" />
             <Tabs active={activeTabKey} onTabChange={setActiveTabKey}>
-              <Tab label={t("tabs.participants")}>
+              <Tabs.Tab label={t("tabs.participants")}>
                 <ParticipantsTable
                   participants={participants}
                   updateParticipant={updateParticipant}
                   deleteParticipant={deleteParticipant}
                   distances={distanceMatrix}
                 />
-              </Tab>
-              <Tab label={t("tabs.distances")}>
+              </Tabs.Tab>
+              <Tabs.Tab label={t("tabs.distances")}>
                 <DistancesTable
                   distanceMatrix={distanceMatrix}
                   updateDistance={updateDistance}
                 />
-              </Tab>
-              <Tab label={t("tabs.history")}>
+              </Tabs.Tab>
+              <Tabs.Tab label={t("tabs.history")}>
                 <HistoryTable history={history} />
-              </Tab>
-              <Tab label={t("tabs.solution")} disabled={solutionTabDisabled}>
+              </Tabs.Tab>
+              <Tabs.Tab label={t("tabs.solution")} disabled={solutionTabDisabled}>
                 <SolutionTable committees={committeeSolution.committees} />
-              </Tab>
+              </Tabs.Tab>
             </Tabs>
             <ErrorMessage />
           </>
