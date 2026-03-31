@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     implementation enforcedPlatform("io.quarkus.platform:quarkus-bom:3.34.1")
-    implementation 'ai.timefold.solver:timefold-solver-quarkus:1.21.0'
+    implementation 'ai.timefold.solver:timefold-solver-quarkus:1.32.0'
     implementation 'io.quarkus:quarkus-smallrye-openapi'
     implementation 'io.quarkus:quarkus-resteasy'
     implementation 'io.quarkus:quarkus-resteasy-jackson'
@@ -21,8 +21,8 @@ dependencies {
 
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
-    testImplementation 'ai.timefold.solver:timefold-solver-test:1.21.0'
-    testImplementation 'ai.timefold.solver:timefold-solver-quarkus-benchmark:1.21.0'
+    testImplementation 'ai.timefold.solver:timefold-solver-test:1.32.0'
+    testImplementation 'ai.timefold.solver:timefold-solver-quarkus-benchmark:1.32.0'
 }
 
 configurations.implementation {

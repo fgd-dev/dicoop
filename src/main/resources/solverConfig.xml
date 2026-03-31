@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<solver xmlns="https://www.optaplanner.org/xsd/solver">
+<solver xmlns="https://timefold.ai/xsd/solver">
   <termination>
     <spentLimit>PT3M</spentLimit>
     <unimprovedSpentLimit>PT30S</unimprovedSpentLimit>
