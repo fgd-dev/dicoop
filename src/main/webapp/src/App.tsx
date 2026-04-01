@@ -431,7 +431,7 @@ function App() {
               {isSolving ? (
                 <Button onClick={stopSolving}>{t("controls.stop")}</Button>
               ) : (
-                <Group position="left" direction="row">
+                <Group>
                   <Button onClick={openFileDialog}>
                     {t("controls.import")}
                   </Button>
@@ -491,7 +491,7 @@ function App() {
                     />
                   </Drawer>
                   <Space h="md" />
-                  <Group position="left">
+                  <Group>
                     <Button onClick={() => setShowMore(true)}>
                       {t("status.openScoreExplanation")}
                     </Button>

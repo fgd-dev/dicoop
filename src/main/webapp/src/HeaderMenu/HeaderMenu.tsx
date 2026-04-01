@@ -54,17 +54,14 @@ export default function HeaderMenu() {
             <MarkGithubIcon size={26} />
           </Center>
         </a>
-        <Menu
-          trigger="hover"
-          delay={500}
-          control={
+        <Menu trigger="hover">
+          <Menu.Target>
             <ActionIcon title={t("settingsMenu.title")}>
               <Center style={centerIconStyle}>
                 <GearIcon size={26} />
               </Center>
             </ActionIcon>
-          }
-        >
+          </Menu.Target>
           <Menu.Label>{t("settingsMenu.language")}</Menu.Label>
           {Object.keys(languages).map((lng) => (
             <Menu.Item

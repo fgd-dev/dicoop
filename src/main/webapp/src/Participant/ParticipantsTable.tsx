@@ -316,7 +316,7 @@ function ParticipantsTable({
             }
           />
           <Space h="lg" />
-          <Group position="apart">
+          <Group>
             <Group>
               <Button type="submit">{t("participant.save")}</Button>
               <Button
