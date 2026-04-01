@@ -548,27 +548,29 @@ function App() {
               isSolving={isSolving}
             />
             <Space h="xl" />
-            <Tabs active={activeTabKey} onTabChange={setActiveTabKey}>
-              <Tabs.Tab label={t("tabs.participants")}>
-                <ParticipantsTable
-                  participants={participants}
-                  updateParticipant={updateParticipant}
-                  deleteParticipant={deleteParticipant}
-                  distances={distanceMatrix}
-                />
-              </Tabs.Tab>
-              <Tabs.Tab label={t("tabs.distances")}>
-                <DistancesTable
-                  distanceMatrix={distanceMatrix}
-                  updateDistance={updateDistance}
-                />
-              </Tabs.Tab>
-              <Tabs.Tab label={t("tabs.history")}>
-                <HistoryTable history={history} />
-              </Tabs.Tab>
-              <Tabs.Tab label={t("tabs.solution")} disabled={solutionTabDisabled}>
-                <SolutionTable committees={committeeSolution.committees} />
-              </Tabs.Tab>
+            <Tabs defaultValue="0" onChange={(value) => setActiveTabKey(Number(value))}>
+              <Tabs.List>
+                <Tabs.Tab value="0" label={t("tabs.participants")}>
+                  <ParticipantsTable
+                    participants={participants}
+                    updateParticipant={updateParticipant}
+                    deleteParticipant={deleteParticipant}
+                    distances={distanceMatrix}
+                  />
+                </Tabs.Tab>
+                <Tabs.Tab value="1" label={t("tabs.distances")}>
+                  <DistancesTable
+                    distanceMatrix={distanceMatrix}
+                    updateDistance={updateDistance}
+                  />
+                </Tabs.Tab>
+                <Tabs.Tab value="2" label={t("tabs.history")}>
+                  <HistoryTable history={history} />
+                </Tabs.Tab>
+                <Tabs.Tab value="3" label={t("tabs.solution")} disabled={solutionTabDisabled}>
+                  <SolutionTable committees={committeeSolution.committees} />
+                </Tabs.Tab>
+              </Tabs.List>
             </Tabs>
             <ErrorMessage />
           </>
