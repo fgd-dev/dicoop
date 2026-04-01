@@ -49,13 +49,10 @@ declare const clingo: any;
 
 function App() {
   const debug = false;
-  // Translation
   const { t } = useTranslation();
 
-  // Error modal from the context
   const showErrorMessage = useErrorMessage().showErrorMessage;
 
-  // Application state
   const [isSolving, setIsSolving] = useState(false);
   const [participants, setParticipants] = useLocalStorage({
     key: "participants",
@@ -97,7 +94,6 @@ function App() {
     } else {
       setParticipants([...participants, participant]);
     }
-    // Checking if we have a new location to handle in the distance matrix
     const locationName = participant.location?.name ?? "";
     if (
       stringNotEmpty(locationName) &&
@@ -122,18 +118,15 @@ function App() {
     }
   };
 
-  // Tabs state
   const [activeTabKey, setActiveTabKey] = useState(0);
   const [solutionTabDisabled, setSolutionTabDisabled] = useState(true);
 
-  // Settings state
   const [settingsLocal, setSettingsLocal] = useLocalStorage({
     key: "settings",
     defaultValue: DEFAULT_SETTINGS_STATE,
     deserialize: (localStorageValue: string): SettingsState => {
       if (!localStorageValue) return DEFAULT_SETTINGS_STATE;
       const state = JSON.parse(localStorageValue) as SettingsState;
-      // We need to check some values if local state is already defined with missing new ones
       if (!state.committeeMeetingSize) {
         state.committeeMeetingSize = [0, 10];
       }
@@ -142,8 +135,6 @@ function App() {
   });
   const [settingsState, setSettingsState] = useSetState(settingsLocal);
 
-  // We are using useSetState to be able to partially set a setting value
-  // But we need to do extra work to save the state in the local storage
   useEffect(() => {
     setSettingsLocal(settingsState);
   }, [settingsState, setSettingsLocal]);
@@ -216,7 +207,6 @@ function App() {
     });
   };
 
-  // API configuration
   const apiConfig = new Configuration({
     basePath: window.location.origin,
   });
@@ -224,7 +214,6 @@ function App() {
     apiConfig
   );
 
-  // data import and export
   const dataExport = () => {
     excelExport(
       getSettings(),
@@ -254,7 +243,6 @@ function App() {
   };
 
   const getParticipantsWithHistory = () => {
-    // We always want at least the last rotation to be able to check the follow up rule
     const numberOfRotationsToTakeInAccount = Math.max(
       settingsState.nbRotationsToReinspect,
       1
@@ -302,11 +290,9 @@ function App() {
       participants: getParticipantsWithHistory(),
     } as SolverOptions;
     if (solver === "clingo") {
-      // Init message
       const initSolution = UNDEFINED_SOLUTION;
       initSolution.solverStatus = "LAUNCHING_CLINGO";
       setCommitteeSolution(initSolution);
-      // Building the model and running clingo
       const model = buildModel(options);
       console.log(model);
       clingo
@@ -347,7 +333,7 @@ function App() {
     if (solver !== "clingo" && committeeSolution.id) {
       committeeSolutionResourceApi
         .apiCommitteeSolutionStopSolvingIdGetRaw({ id: committeeSolution.id })
-        .then((res) => {
+        .then(() => {
           setIsSolving(false);
         })
         .catch((error: any) => {
@@ -395,21 +381,19 @@ function App() {
       });
   };
 
-  // file picker
   const inputFile = useRef<HTMLInputElement>(null);
   const handleFileOpened = (e: any) => {
     const { files } = e.target;
     if (files?.length) {
       const file = files[0];
       dataImport(file);
-      e.target.value = ""; // trick to allow the selection of the same file again
+      e.target.value = "";
     }
   };
   const openFileDialog = () => {
     inputFile?.current?.click();
   };
 
-  // Sore explanation
   const [showMore, setShowMore] = useState(false);
   const showScore = () => {
     const parsedScore = JSON.parse(committeeSolution.score);
@@ -431,153 +415,141 @@ function App() {
     <>
       <AppShell
         padding="md"
-        navbar={
-          <AppShell.Navbar width={{ base: 300 }} p="xs">
-            <div>
-              <input
-                style={{ display: "none" }}
-                accept=".xlsx"
-                ref={inputFile}
-                onChange={handleFileOpened}
-                type="file"
-              />
-              {isSolving ? (
-                <Button onClick={stopSolving}>{t("controls.stop")}</Button>
-              ) : (
+        header={{ height: 120 }}
+        navbar={{ width: 300 }}
+      >
+        <AppShell.Header p="xs">
+          <div style={{ display: "flex", alignItems: "center", height: "100%" }}>
+            <img src={DicoopLogo} className="dicoop-logo" alt="DICOOP" />
+            <div className="dicoop-title">
+              <h1>{t("appName")}</h1>
+              <span>
+                <Trans i18nKey={"appSubTitle"}></Trans>
+              </span>
+            </div>
+            <HeaderMenu />
+          </div>
+        </AppShell.Header>
+
+        <AppShell.Navbar p="xs">
+          <div>
+            <input
+              style={{ display: "none" }}
+              accept=".xlsx"
+              ref={inputFile}
+              onChange={handleFileOpened}
+              type="file"
+            />
+            {isSolving ? (
+              <Button onClick={stopSolving}>{t("controls.stop")}</Button>
+            ) : (
+              <Group>
+                <Button onClick={openFileDialog}>
+                  {t("controls.import")}
+                </Button>
+                <Button onClick={dataExport}>{t("controls.export")}</Button>
+                <Button onClick={startSolving}>{t("controls.solve")}</Button>
+                <Button type="button" color="red" onClick={resetAll}>
+                  {t("controls.reset")}
+                </Button>
+              </Group>
+            )}
+          </div>
+          <div>
+            <RadioGroup
+              value={solver}
+              onChange={setSolver}
+              label="Solver"
+              spacing="xs"
+              size="xs"
+            >
+              <Radio value="optaplanner" label="OptaPlanner" />
+              <Radio value="clingo" label="Clingo" />
+            </RadioGroup>
+          </div>
+          <Divider my="sm" />
+          <div>
+            <b>{t("status.label")}:</b>{" "}
+            {t(`status.${committeeSolution.solverStatus}`)}
+            <br />
+            {debug && committeeSolution.id && (
+              <div>
+                <b>{t("status.id")}:</b> {committeeSolution.id}
+              </div>
+            )}
+            {committeeSolution.score && (
+              <div>
+                <b>{t("status.scoreLabel")}:</b> {showScore()}
+              </div>
+            )}
+            {committeeSolution.scoreExplanation && (
+              <>
+                <Drawer
+                  opened={showMore}
+                  onClose={() => setShowMore(false)}
+                  title={t("status.scoreExplanation")}
+                  padding="xl"
+                  size="75%"
+                  position="right"
+                >
+                  <textarea
+                    style={{
+                      width: "100%",
+                      height: "92vh",
+                      display: "block",
+                    }}
+                    value={committeeSolution.scoreExplanation}
+                    readOnly
+                  />
+                </Drawer>
+                <Space h="md" />
                 <Group>
-                  <Button onClick={openFileDialog}>
-                    {t("controls.import")}
-                  </Button>
-                  <Button onClick={dataExport}>{t("controls.export")}</Button>
-                  <Button onClick={startSolving}>{t("controls.solve")}</Button>
-                  <Button type="button" color="red" onClick={resetAll}>
-                    {t("controls.reset")}
+                  <Button onClick={() => setShowMore(true)}>
+                    {t("status.openScoreExplanation")}
                   </Button>
                 </Group>
-              )}
-            </div>
-            <div>
-              <RadioGroup
-                value={solver}
-                onChange={setSolver}
-                label="Solver"
-                spacing="xs"
-                size="xs"
-              >
-                <Radio value="optaplanner" label="OptaPlanner" />
-                <Radio value="clingo" label="Clingo" />
-              </RadioGroup>
-            </div>
-            <Divider my="sm" />
-            <div>
-              <b>{t("status.label")}:</b>{" "}
-              {t(`status.${committeeSolution.solverStatus}`)}
-              <br />
-              {debug && committeeSolution.id && (
-                <div>
-                  <b>{t("status.id")}:</b> {committeeSolution.id}
-                </div>
-              )}
-              {committeeSolution.score && (
-                <div>
-                  <b>{t("status.scoreLabel")}:</b> {showScore()}
-                </div>
-              )}
-              {committeeSolution.scoreExplanation && (
-                <>
-                  <Drawer
-                    opened={showMore}
-                    onClose={() => setShowMore(false)}
-                    title={t("status.scoreExplanation")}
-                    padding="xl"
-                    size="75%"
-                    position="right"
-                  >
-                    <textarea
-                      style={{
-                        width: "100%",
-                        height: "92vh",
-                        display: "block",
-                      }}
-                      value={committeeSolution.scoreExplanation}
-                      readOnly
-                    />
-                  </Drawer>
-                  <Space h="md" />
-                  <Group>
-                    <Button onClick={() => setShowMore(true)}>
-                      {t("status.openScoreExplanation")}
-                    </Button>
-                  </Group>
-                </>
-              )}
-            </div>
-            </AppShell.Navbar>
-        }
-        header={
-          <AppShell.Header height={120} p="xs">
-            <div
-              style={{ display: "flex", alignItems: "center", height: "100%" }}
-            >
-              <img src={DicoopLogo} className="dicoop-logo" alt="DICOOP" />
-              <div className="dicoop-title">
-                <h1>{t("appName")}</h1>
-                <span>
-                  <Trans i18nKey={"appSubTitle"}></Trans>
-                </span>
-              </div>
-              <HeaderMenu />
-            </div>
-          </AppShell.Header>
-        }
-        styles={(theme) => ({
-          main: {
-            backgroundColor:
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[8]
-                : theme.colors.gray[0],
-          },
-        })}
-      >
-        {
-          <>
-            <SolutionSettingsForm
-              settingsState={settingsState}
-              setSettingsState={setSettingsState}
-              isSolving={isSolving}
-            />
-            <Space h="xl" />
-            <Tabs defaultValue="0" onChange={(value) => setActiveTabKey(Number(value))}>
-              <Tabs.List>
-                <Tabs.Tab value="0" label={t("tabs.participants")} />
-                <Tabs.Tab value="1" label={t("tabs.distances")} />
-                <Tabs.Tab value="2" label={t("tabs.history")} />
-                <Tabs.Tab value="3" label={t("tabs.solution")} disabled={solutionTabDisabled} />
-              </Tabs.List>
-              <Tabs.Panel value="0">
-                <ParticipantsTable
-                  participants={participants}
-                  updateParticipant={updateParticipant}
-                  deleteParticipant={deleteParticipant}
-                  distances={distanceMatrix}
-                />
-              </Tabs.Panel>
-              <Tabs.Panel value="1">
-                <DistancesTable
-                  distanceMatrix={distanceMatrix}
-                  updateDistance={updateDistance}
-                />
-              </Tabs.Panel>
-              <Tabs.Panel value="2">
-                <HistoryTable history={history} />
-              </Tabs.Panel>
-              <Tabs.Panel value="3">
-                <SolutionTable committees={committeeSolution.committees} />
-              </Tabs.Panel>
-            </Tabs>
-            <ErrorMessage />
-          </>
-        }
+              </>
+            )}
+          </div>
+        </AppShell.Navbar>
+
+        <AppShell.Main>
+          <SolutionSettingsForm
+            settingsState={settingsState}
+            setSettingsState={setSettingsState}
+            isSolving={isSolving}
+          />
+          <Space h="xl" />
+          <Tabs defaultValue="0" onChange={(value) => setActiveTabKey(Number(value))}>
+            <Tabs.List>
+              <Tabs.Tab value="0" label={t("tabs.participants")} />
+              <Tabs.Tab value="1" label={t("tabs.distances")} />
+              <Tabs.Tab value="2" label={t("tabs.history")} />
+              <Tabs.Tab value="3" label={t("tabs.solution")} disabled={solutionTabDisabled} />
+            </Tabs.List>
+            <Tabs.Panel value="0">
+              <ParticipantsTable
+                participants={participants}
+                updateParticipant={updateParticipant}
+                deleteParticipant={deleteParticipant}
+                distances={distanceMatrix}
+              />
+            </Tabs.Panel>
+            <Tabs.Panel value="1">
+              <DistancesTable
+                distanceMatrix={distanceMatrix}
+                updateDistance={updateDistance}
+              />
+            </Tabs.Panel>
+            <Tabs.Panel value="2">
+              <HistoryTable history={history} />
+            </Tabs.Panel>
+            <Tabs.Panel value="3">
+              <SolutionTable committees={committeeSolution.committees} />
+            </Tabs.Panel>
+          </Tabs>
+          <ErrorMessage />
+        </AppShell.Main>
       </AppShell>
       <CookieConsent buttonText={t("cookies.button")}>
         <span>{t("cookies.message1")}</span>
