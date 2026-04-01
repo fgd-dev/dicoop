@@ -3,7 +3,7 @@ import { CommitteeSet } from "../Model/CommitteeSet";
 import { PersistenceData } from "../Model/PersistenceData";
 import { Solution } from "../Model/Solution";
 import { SolvedCommittee } from "../Model/SolvedCommittee";
-import { read, utils, writeFile } from "xlsx";
+import ExcelJS from "exceljs";
 import { parseExcelData } from "./ExcelDataParser";
 import {
   Constants,
@@ -13,23 +13,24 @@ import {
   Validators,
 } from "./ExcelValidation";
 
-export function excelImport(
+export async function excelImport(
   file: any,
   callback: (data: PersistenceData) => void,
   error: (validationResult: ValidationResult) => void
 ) {
   const reader = new FileReader();
 
-  reader.onload = (e) => {
+  reader.onload = async (e) => {
     const ab = e?.target?.result;
-    const workbook = read(ab, { type: "binary" });
-    const sheetsValidationError = Validators.validateSheetsNames(
-      workbook.SheetNames
-    );
-    if (sheetsValidationError.hasError()) {
-      error(sheetsValidationError);
-    }
     try {
+      const workbook = new ExcelJS.Workbook();
+      await workbook.xlsx.load(ab as ArrayBuffer);
+      const sheetsValidationError = Validators.validateSheetsNames(
+        workbook.worksheets.map((ws) => ws.name)
+      );
+      if (sheetsValidationError.hasError()) {
+        error(sheetsValidationError);
+      }
       callback(parseExcelData(workbook));
     } catch (parseError: any) {
       console.log(parseError);
@@ -37,7 +38,7 @@ export function excelImport(
     }
   };
 
-  reader.readAsBinaryString(file);
+  reader.readAsArrayBuffer(file);
 }
 
 export function excelExport(
@@ -47,76 +48,41 @@ export function excelExport(
   distanceMatrix: DistanceMatrix,
   committeeSolution: Solution
 ) {
-  // Settings sheet
-  const settingsData = [
-    [
-      Constants.SETTING_NUMBER_OF_PRO,
-      settings.nbProParticipants?.value?.[0],
-      settings.nbProParticipants?.value?.[1],
-    ],
-    [
-      Constants.SETTING_NUMBER_OF_ASSIGNMENTS_FOR_A_PRO,
-      settings.numberOfAssignmentsForAProfessional?.value?.[0],
-      settings.numberOfAssignmentsForAProfessional?.value?.[1],
-    ],
-    [
-      Constants.SETTING_NUMBER_OF_NON_PRO,
-      settings.nbNonProParticipants?.value?.[0],
-      settings.nbNonProParticipants?.value?.[1],
-    ],
-    [
-      Constants.SETTING_NUMBER_OF_ASSIGNMENTS_FOR_A_NON_PRO,
-      settings.numberOfAssignmentsForANonProfessional?.value?.[0],
-      settings.numberOfAssignmentsForANonProfessional?.value?.[1],
-    ],
-    [
-      Constants.SETTING_NUMBER_OF_EXTERNAL,
-      settings.nbExternalParticipants?.value?.[0],
-      settings.nbExternalParticipants?.value?.[1],
-    ],
-    [
-      Constants.SETTING_NUMBER_OF_ASSIGNMENTS_FOR_AN_EXTERNAL,
-      settings.numberOfAssignmentsForAnExternal?.value?.[0],
-      settings.numberOfAssignmentsForAnExternal?.value?.[1],
-    ],
-    [
-      Constants.SETTING_NUMBER_OF_ROTATIONS_TO_REINSPECT,
-      settings.nbRotationsToReinspect,
-    ],
-    [
-      Constants.SETTING_NUMBER_OF_INSPECTORS_FOLLOWING_UP,
-      settings.nbInspectorsFollowingUp,
-    ],
-    [
-      Constants.SETTING_TRAVELLING_DISTANCE_RANGE,
-      settings.travellingDistanceRange?.value?.[0],
-      settings.travellingDistanceRange?.value?.[1],
-    ],
-    [
-      Constants.SETTING_COMMITTEE_MEETING_SIZE,
-      settings.committeeMeetingSize?.value?.[0],
-      settings.committeeMeetingSize?.value?.[1],
-    ],
-    [
-      Constants.SETTING_USE_AVAILABILITY,
-      settings.useAvailability ? "true" : "false",
-    ],
-    [
-      Constants.SETTINGS_SHUFFLE_PARTICIPANTS,
-      settings.shuffleParticipants ? "true" : "false",
-    ],
-  ];
-  const settingsWorksheet = utils.aoa_to_sheet(settingsData);
+  const workbook = new ExcelJS.Workbook();
+  workbook.creator = "DICOOP";
+  workbook.created = new Date();
 
   const sanitizeString = (s?: string) => s ?? "";
-
   const sanitizeNamedArray = (a?: Array<any>): string =>
     a === undefined ? "" : a.map((i: any) => i.name).join(",");
 
+  // Settings sheet
+  const settingsSheet = workbook.addWorksheet(Constants.SETTINGS);
+  settingsSheet.columns = [
+    { header: "Setting", key: "setting" },
+    { header: "Value 1", key: "value1" },
+    { header: "Value 2", key: "value2" },
+  ];
+  settingsSheet.addRows([
+    { setting: Constants.SETTING_NUMBER_OF_PRO, value1: settings.nbProParticipants?.value?.[0], value2: settings.nbProParticipants?.value?.[1] },
+    { setting: Constants.SETTING_NUMBER_OF_ASSIGNMENTS_FOR_A_PRO, value1: settings.numberOfAssignmentsForAProfessional?.value?.[0], value2: settings.numberOfAssignmentsForAProfessional?.value?.[1] },
+    { setting: Constants.SETTING_NUMBER_OF_NON_PRO, value1: settings.nbNonProParticipants?.value?.[0], value2: settings.nbNonProParticipants?.value?.[1] },
+    { setting: Constants.SETTING_NUMBER_OF_ASSIGNMENTS_FOR_A_NON_PRO, value1: settings.numberOfAssignmentsForANonProfessional?.value?.[0], value2: settings.numberOfAssignmentsForANonProfessional?.value?.[1] },
+    { setting: Constants.SETTING_NUMBER_OF_EXTERNAL, value1: settings.nbExternalParticipants?.value?.[0], value2: settings.nbExternalParticipants?.value?.[1] },
+    { setting: Constants.SETTING_NUMBER_OF_ASSIGNMENTS_FOR_AN_EXTERNAL, value1: settings.numberOfAssignmentsForAnExternal?.value?.[0], value2: settings.numberOfAssignmentsForAnExternal?.value?.[1] },
+    { setting: Constants.SETTING_NUMBER_OF_ROTATIONS_TO_REINSPECT, value1: settings.nbRotationsToReinspect },
+    { setting: Constants.SETTING_NUMBER_OF_INSPECTORS_FOLLOWING_UP, value1: settings.nbInspectorsFollowingUp },
+    { setting: Constants.SETTING_TRAVELLING_DISTANCE_RANGE, value1: settings.travellingDistanceRange?.value?.[0], value2: settings.travellingDistanceRange?.value?.[1] },
+    { setting: Constants.SETTING_COMMITTEE_MEETING_SIZE, value1: settings.committeeMeetingSize?.value?.[0], value2: settings.committeeMeetingSize?.value?.[1] },
+    { setting: Constants.SETTING_USE_AVAILABILITY, value1: settings.useAvailability ? "true" : "false" },
+    { setting: Constants.SETTINGS_SHUFFLE_PARTICIPANTS, value1: settings.shuffleParticipants ? "true" : "false" },
+  ]);
+
   // Participants sheet
-  const participantsData = [participantsColumns];
-  participants.forEach((p: Person) =>
-    participantsData.push([
+  const participantsSheet = workbook.addWorksheet(Constants.PARTICIPANTS);
+  participantsSheet.addRow(Object.keys(participantsColumns).map(k => participantsColumns[k as keyof typeof participantsColumns]));
+  participants.forEach((p: Person) => {
+    participantsSheet.addRow([
       sanitizeString(p.name),
       sanitizeString(p.personType?.name),
       sanitizeString(p.location?.name),
@@ -125,53 +91,40 @@ export function excelExport(
       sanitizeNamedArray(p.requiredSkills),
       p.needsEvaluation ? "true" : "false",
       sanitizeNamedArray(p.vetoes),
-      sanitizeString(p.maxNumberOfInspections?.toString()),
-    ])
-  );
-  const participantsWorksheet = utils.aoa_to_sheet(participantsData);
+      p.maxNumberOfInspections?.toString() ?? "",
+    ]);
+  });
 
   // Solution sheet
-  const solutionsData = [[Constants.SOLUTION, new Date()], solutionHeaders];
-  exportCommittees(committeeSolution.committees, solutionsData);
-  const solutionWorksheet = utils.aoa_to_sheet(solutionsData);
+  const solutionSheet = workbook.addWorksheet(Constants.SOLUTION);
+  solutionSheet.addRow([Constants.SOLUTION, new Date()]);
+  solutionSheet.addRow(solutionHeaders);
+  exportCommittees(committeeSolution.committees, solutionSheet);
 
   // History sheet
-  const historyData = new Array<any>();
+  const historySheet = workbook.addWorksheet(Constants.HISTORY);
   history.forEach((committees) => {
-    historyData.push([Constants.SOLUTION, `${committees.date}`]);
-    historyData.push(solutionHeaders);
-    exportCommittees(committees, historyData);
+    historySheet.addRow([Constants.SOLUTION, `${committees.date}`]);
+    historySheet.addRow(solutionHeaders);
+    exportCommittees(committees, historySheet);
   });
-  const historyWorksheet = utils.aoa_to_sheet(historyData);
 
   // Distances sheet
+  const distancesSheet = workbook.addWorksheet(Constants.DISTANCES);
   const distancesHeaders = [""];
   distanceMatrix.locations?.forEach((l: string) => distancesHeaders.push(l));
-  const distancesData = [distancesHeaders];
+  distancesSheet.addRow(distancesHeaders);
   distanceMatrix.distances?.forEach((d: Array<number>, index: number) => {
-    const line = [distanceMatrix.locations?.[index]] as Array<any>;
-    d.forEach((n: number) => line.push(n));
-    distancesData.push(line);
+    const line = [distanceMatrix.locations?.[index], ...d];
+    distancesSheet.addRow(line);
   });
-  const distancesWorksheet = utils.aoa_to_sheet(distancesData);
 
-  // Saving the workbook
-  const workbook = utils.book_new();
-  utils.book_append_sheet(workbook, settingsWorksheet, Constants.SETTINGS);
-  utils.book_append_sheet(
-    workbook,
-    participantsWorksheet,
-    Constants.PARTICIPANTS
-  );
-  utils.book_append_sheet(workbook, historyWorksheet, Constants.HISTORY);
-  utils.book_append_sheet(workbook, distancesWorksheet, Constants.DISTANCES);
-  utils.book_append_sheet(workbook, solutionWorksheet, Constants.SOLUTION);
-  writeFile(workbook, "dicoop-export.xlsx");
+  workbook.xlsx.writeFile("dicoop-export.xlsx");
 }
 
 const exportCommittees = (
   committees: CommitteeSet,
-  worksheetData: Array<any>
+  worksheet: ExcelJS.Worksheet
 ) => {
   committees.getCommittees().forEach((c: SolvedCommittee) => {
     const rowData = [c.evaluatedPerson?.name];
@@ -181,6 +134,6 @@ const exportCommittees = (
         rowData.push(a.assignedPerson.name)
       );
     }
-    worksheetData.push(rowData);
+    worksheet.addRow(rowData);
   });
 };

@@ -15,28 +15,21 @@ import { stringNotEmpty } from "../Model/ModelUtils";
 import { NamedEntity } from "../Model/NamedEntity";
 import { PersistenceData } from "../Model/PersistenceData";
 import { SolvedCommittee } from "../Model/SolvedCommittee";
-import { utils, WorkBook } from "xlsx";
+import ExcelJS from "exceljs";
 import { Constants } from "./ExcelValidation";
 import { v4 as uuid } from "uuid";
 
-export function parseExcelData(workbook: WorkBook): PersistenceData {
+export function parseExcelData(workbook: ExcelJS.Workbook): PersistenceData {
   const data = new PersistenceData();
-  workbook.SheetNames.forEach((name) => {
-    const sheet = workbook.Sheets[name];
-    const options =
-      name === Constants.PARTICIPANTS
-        ? {}
-        : {
-            header: 1,
-            raw: false,
-          };
-    const sheetData = utils.sheet_to_json(sheet, options);
+  workbook.eachSheet((worksheet) => {
+    const name = worksheet.name;
+    const sheetData = sheetToArray(worksheet);
     switch (name) {
       case Constants.SETTINGS:
         data.settings = parseSettings(sheetData);
         break;
       case Constants.PARTICIPANTS:
-        data.participants = parseParticipants(sheetData);
+        data.participants = parseParticipants(worksheet);
         break;
       case Constants.HISTORY:
         const solutions = parseMultipleSolutions(sheetData);
@@ -59,19 +52,29 @@ export function parseExcelData(workbook: WorkBook): PersistenceData {
   return data;
 }
 
-function parseDistances(sheetData: Array<any>): DistanceMatrix {
+function sheetToArray(worksheet: ExcelJS.Worksheet): any[][] {
+  const result: any[][] = [];
+  worksheet.eachRow((row) => {
+    const values: any[] = [];
+    row.eachCell((cell) => {
+      values.push(cell.value);
+    });
+    result.push(values);
+  });
+  return result;
+}
+
+function parseDistances(sheetData: any[][]): DistanceMatrix {
   const distanceMatrix = {} as DistanceMatrix;
-  sheetData.forEach((rowData: Array<any>, originIndex: number) => {
+  sheetData.forEach((rowData: any[], originIndex: number) => {
     if (originIndex === 0) {
-      const origins = rowData.map((item) => item.trim()).filter(stringNotEmpty);
-      // initialisation of the distances matrix
+      const origins = rowData.map((item) => String(item ?? "").trim()).filter(stringNotEmpty);
       distanceMatrix.locations = origins;
       distanceMatrix.distances = new Array(origins.length)
         .fill(0)
         .map(() => new Array(origins.length).fill(0));
     } else {
       const dest = rowData[0];
-      // Verify that the destination is a valid location
       if (dest !== distanceMatrix.locations?.[originIndex - 1]) {
         throw new Error(
           `The destination ${dest} is not a valid location.` +
@@ -83,7 +86,7 @@ function parseDistances(sheetData: Array<any>): DistanceMatrix {
       rowData.forEach((cellData, destIndex) => {
         if (destIndex > 0 && distanceMatrix.distances) {
           distanceMatrix.distances[originIndex - 1][destIndex - 1] =
-            parseInt(cellData);
+            parseInt(cellData) || 0;
         }
       });
     }
@@ -91,12 +94,12 @@ function parseDistances(sheetData: Array<any>): DistanceMatrix {
   return distanceMatrix;
 }
 
-function parseMultipleSolutions(sheetData: Array<any>): Array<any> {
-  const solutions = new Array<any>();
+function parseMultipleSolutions(sheetData: any[][]): any[][] {
+  const solutions = new Array<any[]>();
   if (sheetData?.length > 0) {
     let currentSolution = new Array<any>();
     let isFirstSolution = true;
-    sheetData.forEach((rowData: Array<any>) => {
+    sheetData.forEach((rowData: any[]) => {
       const firstCell = rowData[0];
       if (firstCell === Constants.SOLUTION) {
         if (isFirstSolution) {
@@ -113,10 +116,10 @@ function parseMultipleSolutions(sheetData: Array<any>): Array<any> {
   return solutions;
 }
 
-function parseSolution(sheetData: Array<any>): CommitteeSet {
+function parseSolution(sheetData: any[][]): CommitteeSet {
   const set: CommitteeSet = new CommitteeSet();
   let isWellFormed = false;
-  sheetData.forEach((rowData: Array<any>) => {
+  sheetData.forEach((rowData: any[]) => {
     const firstCell = rowData[0];
     if (firstCell !== Constants.SOLUTION_EVALUATED_PERSON) {
       if (firstCell === Constants.SOLUTION) {
@@ -158,9 +161,9 @@ function rowToRange(rowData: any[]): Range {
   } as Range;
 }
 
-function parseSettings(sheetData: Array<any>): Settings {
+function parseSettings(sheetData: any[][]): Settings {
   const settings = DEFAULT_SETTINGS;
-  sheetData.forEach((rowData: Array<any>) => {
+  sheetData.forEach((rowData: any[]) => {
     const settingName = rowData[0];
     switch (settingName) {
       case Constants.SETTING_NUMBER_OF_PRO:
@@ -207,28 +210,42 @@ function parseSettings(sheetData: Array<any>): Settings {
   return settings;
 }
 
-function parseParticipants(sheetData: Array<any>): Array<Person> {
+function parseParticipants(worksheet: ExcelJS.Worksheet): Array<Person> {
   const participants = new Array<Person>();
-  sheetData.forEach((rowData: any) => {
+  let headerRow: any[] | undefined;
+  
+  worksheet.eachRow((row, rowNumber) => {
+    if (rowNumber === 1) {
+      headerRow = row.values as any[];
+      return;
+    }
+    const rowData = row.values as any[];
+    const rowObj: Record<string, any> = {};
+    if (headerRow) {
+      headerRow.forEach((header, index) => {
+        rowObj[header] = rowData[index];
+      });
+    }
+    
     const person = {
-      name: (rowData[Constants.PARTICIPANT_NAME] ?? "").trim(),
+      name: (rowObj[Constants.PARTICIPANT_NAME] ?? "").toString().trim(),
       personType: {
-        name: (rowData[Constants.PARTICIPANT_TYPE] ?? "").trim(),
+        name: (rowObj[Constants.PARTICIPANT_TYPE] ?? "").toString().trim(),
       } as PersonType,
       location: {
-        name: (rowData[Constants.PARTICIPANT_LOCATION] ?? "").trim(),
+        name: (rowObj[Constants.PARTICIPANT_LOCATION] ?? "").toString().trim(),
       } as Location,
-      skills: parseNamedList(rowData[Constants.PARTICIPANT_SKILLS]),
-      availability: parseNamedList(rowData[Constants.PARTICIPANT_AVAILABILITY]),
+      skills: parseNamedList(rowObj[Constants.PARTICIPANT_SKILLS]),
+      availability: parseNamedList(rowObj[Constants.PARTICIPANT_AVAILABILITY]),
       requiredSkills: parseNamedList(
-        rowData[Constants.PARTICIPANT_REQUIRED_SKILLS]
+        rowObj[Constants.PARTICIPANT_REQUIRED_SKILLS]
       ),
-      vetoes: parseNamedList(rowData[Constants.PARTICIPANT_VETOES]),
+      vetoes: parseNamedList(rowObj[Constants.PARTICIPANT_VETOES]),
       needsEvaluation:
-        (rowData[Constants.PARTICIPANT_NEEDS_EVALUATION] ?? "").trim() ===
+        (rowObj[Constants.PARTICIPANT_NEEDS_EVALUATION] ?? "").toString().trim() ===
         "true",
       maxNumberOfInspections: parseNumber(
-        rowData[Constants.PARTICIPANT_MAX_NUMBER_OF_INSPECTIONS]
+        rowObj[Constants.PARTICIPANT_MAX_NUMBER_OF_INSPECTIONS]
       ),
       hasAlreadyInspected: [] as Array<Array<string>>,
     } as Person;
@@ -237,8 +254,8 @@ function parseParticipants(sheetData: Array<any>): Array<Person> {
   return participants;
 }
 
-function parseNumber(s: string): number | undefined {
-  if (s === undefined || s.length === 0) {
+function parseNumber(s: any): number | undefined {
+  if (s === undefined || s === null || s === "") {
     return undefined;
   }
   const n = +s;
@@ -248,10 +265,10 @@ function parseNumber(s: string): number | undefined {
   return n;
 }
 
-function parseNamedList(s: string): Array<NamedEntity> {
+function parseNamedList(s: any): Array<NamedEntity> {
   const list = new Array<NamedEntity>();
   if (s) {
-    s.split(",").forEach((item) => {
+    String(s).split(",").forEach((item) => {
       item = (item ?? "").trim();
       if (stringNotEmpty(item)) {
         list.push({

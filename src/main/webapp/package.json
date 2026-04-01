@@ -15,6 +15,7 @@
     "@mantine/hooks": "^4.2.12",
     "@mantine/notifications": "^4.2.12",
     "@primer/octicons-react": "^17.3.0",
+    "exceljs": "^4.4.0",
     "i18next": "^24.2.2",
     "i18next-browser-languagedetector": "^8.0.4",
     "i18next-http-backend": "^3.0.2",
@@ -23,8 +24,7 @@
     "react-dom": "^18.3.1",
     "react-i18next": "^15.4.1",
     "uuid": "^11.0.5",
-    "web-vitals": "^2.1.4",
-    "xlsx": "^0.18.5"
+    "web-vitals": "^2.1.4"
   },
   "devDependencies": {
     "@types/react": "^18.3.28",
