@@ -1,4 +1,4 @@
-import { ActionIcon, Center, Group, Menu, Modal } from "@mantine/core";
+import { ActionIcon, Group, Menu, Modal } from "@mantine/core";
 import { BookOpenIcon, DotsThreeVerticalIcon, GithubLogoIcon, QuestionMarkIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -51,10 +51,8 @@ export default function HeaderMenu() {
         </a>
         <Menu shadow="md" width={150}>
           <Menu.Target>
-            <ActionIcon title={t("settingsMenu.title")}>
-              <Center style={centerIconStyle}>
-                <DotsThreeVerticalIcon size={26} weight="bold" />
-              </Center>
+            <ActionIcon title={t("settingsMenu.title")} variant="subtle" color="dark">
+              <DotsThreeVerticalIcon size={26} weight="bold" />
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
