@@ -1,4 +1,4 @@
-import { ActionIcon, Group, Menu, Modal } from "@mantine/core";
+import { ActionIcon, Center, Group, Menu, Modal } from "@mantine/core";
 import { BookOpenIcon, DotsThreeVerticalIcon, GithubLogoIcon, QuestionMarkIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
