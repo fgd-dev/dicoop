@@ -550,27 +550,31 @@ function App() {
             <Space h="xl" />
             <Tabs defaultValue="0" onChange={(value) => setActiveTabKey(Number(value))}>
               <Tabs.List>
-                <Tabs.Tab value="0" label={t("tabs.participants")}>
-                  <ParticipantsTable
-                    participants={participants}
-                    updateParticipant={updateParticipant}
-                    deleteParticipant={deleteParticipant}
-                    distances={distanceMatrix}
-                  />
-                </Tabs.Tab>
-                <Tabs.Tab value="1" label={t("tabs.distances")}>
-                  <DistancesTable
-                    distanceMatrix={distanceMatrix}
-                    updateDistance={updateDistance}
-                  />
-                </Tabs.Tab>
-                <Tabs.Tab value="2" label={t("tabs.history")}>
-                  <HistoryTable history={history} />
-                </Tabs.Tab>
-                <Tabs.Tab value="3" label={t("tabs.solution")} disabled={solutionTabDisabled}>
-                  <SolutionTable committees={committeeSolution.committees} />
-                </Tabs.Tab>
+                <Tabs.Tab value="0" label={t("tabs.participants")} />
+                <Tabs.Tab value="1" label={t("tabs.distances")} />
+                <Tabs.Tab value="2" label={t("tabs.history")} />
+                <Tabs.Tab value="3" label={t("tabs.solution")} disabled={solutionTabDisabled} />
               </Tabs.List>
+              <Tabs.Panel value="0">
+                <ParticipantsTable
+                  participants={participants}
+                  updateParticipant={updateParticipant}
+                  deleteParticipant={deleteParticipant}
+                  distances={distanceMatrix}
+                />
+              </Tabs.Panel>
+              <Tabs.Panel value="1">
+                <DistancesTable
+                  distanceMatrix={distanceMatrix}
+                  updateDistance={updateDistance}
+                />
+              </Tabs.Panel>
+              <Tabs.Panel value="2">
+                <HistoryTable history={history} />
+              </Tabs.Panel>
+              <Tabs.Panel value="3">
+                <SolutionTable committees={committeeSolution.committees} />
+              </Tabs.Panel>
             </Tabs>
             <ErrorMessage />
           </>
