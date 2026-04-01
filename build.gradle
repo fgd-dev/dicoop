@@ -46,16 +46,22 @@ compileTestJava {
     options.encoding = 'UTF-8'
 }
 
-task buildFrontend(type: Exec) {
-    workingDir './src/main/webapp'
-    commandLine 'pnpm', 'run', 'build'
+tasks.register("buildFrontend", Exec) {
+    workingDir = file("./src/main/webapp")
+    commandLine("pnpm", "run", "build")
 }
 
-task copyFrontend(type: Copy) {
-    from './src/main/webapp/dist'
-    into './src/main/resources/META-INF/resources'
+tasks.register("copyFrontend", Copy) {
+    from("src/main/webapp/dist")
+    into("src/main/resources/META-INF/resources")
 }
 
-buildFrontend.finalizedBy copyFrontend
+processResources {
+    dependsOn("copyFrontend")
+}
 
-assemble.dependsOn buildFrontend
+copyFrontend {
+    dependsOn("buildFrontend")
+}
+
+assemble.dependsOn("copyFrontend")
