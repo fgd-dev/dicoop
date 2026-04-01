@@ -1,4 +1,4 @@
-import { CommitteeAssignment, CommitteeSolution } from "src/api";
+import { CommitteeAssignment, CommitteeSolution } from "../api";
 import { v4 as uuid } from "uuid";
 import { SolvedCommittee } from "./SolvedCommittee";
 

@@ -1,4 +1,4 @@
-import { DistanceMatrix, Person, Settings } from "src/api";
+import { DistanceMatrix, Person, Settings } from "../api";
 import { CommitteeSet } from "./CommitteeSet";
 import { DEFAULT_SETTINGS } from "./Defaults";
 

@@ -1,8 +1,8 @@
 import { Table, Text } from "@mantine/core";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { CommitteeSet } from "src/Model/CommitteeSet";
-import { SolvedCommittee } from "src/Model/SolvedCommittee";
+import { CommitteeSet } from "../Model/CommitteeSet";
+import { SolvedCommittee } from "../Model/SolvedCommittee";
 
 type SolutionTableProps = {
   committees: CommitteeSet;

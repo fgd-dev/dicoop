@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'io.quarkus' version '3.34.1'
-    id 'org.siouan.frontend-jdk21' version '9.1.0'
 }
 
 repositories {
@@ -38,12 +37,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-frontend {
-    nodeVersion = '20.18.1'
-    packageJsonDirectory = file('./src/main/webapp')
-    assembleScript = 'run prod'
-}
-
 compileJava {
     options.encoding = 'UTF-8'
     options.compilerArgs << '-parameters'
@@ -53,8 +46,16 @@ compileTestJava {
     options.encoding = 'UTF-8'
 }
 
-frontend {
-    nodeVersion = '22.14.0'
-    packageJsonDirectory = file('./src/main/webapp')
-    assembleScript = 'run prod'
+task buildFrontend(type: Exec) {
+    workingDir './src/main/webapp'
+    commandLine 'pnpm', 'run', 'build'
 }
+
+task copyFrontend(type: Copy) {
+    from './src/main/webapp/dist'
+    into './src/main/resources/META-INF/resources'
+}
+
+buildFrontend.finalizedBy copyFrontend
+
+assemble.dependsOn buildFrontend

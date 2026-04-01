@@ -1,4 +1,4 @@
-import { CommitteeAssignment, Person, TimeSlot } from "src/api";
+import { CommitteeAssignment, Person, TimeSlot } from "../api";
 
 export class SolvedCommittee {
   constructor(

@@ -1,5 +1,5 @@
 import { NumberInput, Table } from "@mantine/core";
-import { DistanceMatrix } from "src/api";
+import { DistanceMatrix } from "../api";
 
 type DistancesTableProps = {
   distanceMatrix: DistanceMatrix;

@@ -28,7 +28,7 @@ import ErrorMessage from "./ErrorMessage/ErrorMessage";
 import { useErrorMessage } from "./ErrorMessage/ErrorMessageContext";
 import HeaderMenu from "./HeaderMenu/HeaderMenu";
 import HistoryTable from "./History/HistoryTable";
-import { ReactComponent as DicoopLogo } from "./images/logo.svg";
+import DicoopLogo from "./images/logo.svg";
 import { CommitteeSet } from "./Model/CommitteeSet";
 import {
   DEFAULT_SETTINGS_STATE,

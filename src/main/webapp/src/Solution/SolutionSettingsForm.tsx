@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { SettingsState } from "src/Model/SettingsState";
+import { SettingsState } from "../Model/SettingsState";
 
 type SolutionSettingsProps = {
   settingsState: SettingsState;

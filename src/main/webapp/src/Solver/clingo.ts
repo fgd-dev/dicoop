@@ -4,16 +4,16 @@ import {
   Person,
   SolverOptions,
   TimeSlot,
-} from "src/api";
-import { CommitteeSet } from "src/Model/CommitteeSet";
-import { UNDEFINED_SOLUTION } from "src/Model/Defaults";
-import { Solution } from "src/Model/Solution";
+} from "../api";
+import { CommitteeSet } from "../Model/CommitteeSet";
+import { UNDEFINED_SOLUTION } from "../Model/Defaults";
+import { Solution } from "../Model/Solution";
 import {
   getSanitizedAvailabilities,
   getSanitizedLocations,
   getSanitizedSkills,
   sanitizeName,
-} from "src/Participant/ParticipantsTools";
+} from "../Participant/ParticipantsTools";
 import {
   COMMITTEE_MEETING_MODEL,
   CORE_MODEL,

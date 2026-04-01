@@ -1,4 +1,4 @@
-import { DistanceMatrix, Range, Settings } from "src/api";
+import { DistanceMatrix, Range, Settings } from "../api";
 import { CommitteeSet } from "./CommitteeSet";
 import { SettingsState } from "./SettingsState";
 import { Solution } from "./Solution";

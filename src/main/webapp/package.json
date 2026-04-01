@@ -1,62 +1,39 @@
 {
   "name": "dicoop",
-  "version": "0.1.0",
   "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prod": "vite build && rsync -a dist/* ../resources/META-INF/resources",
+    "api": "openapi-generator-cli generate -i http://localhost:8080/q/openapi -g typescript-axios -o src/api --skip-validate-spec"
+  },
   "dependencies": {
     "@mantine/core": "^4.2.12",
     "@mantine/hooks": "^4.2.12",
     "@mantine/notifications": "^4.2.12",
     "@primer/octicons-react": "^17.3.0",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^14.2.1",
-    "@types/jest": "^28.1.8",
-    "@types/node": "^18.19.130",
-    "@types/react": "^18.3.28",
-    "@types/react-dom": "^18.3.7",
-    "axios": "^0.27.2",
-    "i18next": "^21.10.0",
-    "i18next-browser-languagedetector": "^6.1.8",
-    "i18next-http-backend": "^1.4.5",
+    "axios": "^1.7.9",
+    "i18next": "^24.2.2",
+    "i18next-browser-languagedetector": "^8.0.4",
+    "i18next-http-backend": "^3.0.2",
     "react": "^18.3.1",
     "react-cookie-consent": "^8.0.1",
     "react-dom": "^18.3.1",
-    "react-i18next": "^11.18.6",
-    "react-scripts": "5.0.1",
-    "tslib": "^2.8.1",
-    "typescript": "^4.9.5",
-    "uuid": "^8.3.2",
+    "react-i18next": "^15.4.1",
+    "uuid": "^11.0.5",
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5"
   },
-  "scripts": {
-    "start": "ESLINT_NO_DEV_ERRORS=true react-scripts start",
-    "build": "ESLINT_NO_DEV_ERRORS=true react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "prod": "react-scripts build --dest && rsync -a build/* ../resources/META-INF/resources",
-    "api": "npx openapi-generator-cli generate -i http://localhost:8080/q/openapi -g typescript-axios -o src/api --skip-validate-spec"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "proxy": "http://127.0.0.1:8080",
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.15.3"
+    "@openapitools/openapi-generator-cli": "^2.15.3",
+    "@types/react": "^18.3.28",
+    "@types/react-dom": "^18.3.7",
+    "@types/uuid": "^10.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "~5.7.3",
+    "vite": "^6.1.0"
   }
 }

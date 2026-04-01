@@ -1,4 +1,4 @@
-import { CommitteeAssignment, CommitteeSolution } from "src/api";
+import { CommitteeAssignment, CommitteeSolution } from "../api";
 import { CommitteeSet } from "./CommitteeSet";
 
 const UNDEFINED = "UNDEFINED";

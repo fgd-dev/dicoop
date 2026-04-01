@@ -8,13 +8,13 @@ import {
   Range,
   Settings,
   TimeSlot,
-} from "src/api";
-import { CommitteeSet } from "src/Model/CommitteeSet";
-import { DEFAULT_SETTINGS } from "src/Model/Defaults";
-import { stringNotEmpty } from "src/Model/ModelUtils";
-import { NamedEntity } from "src/Model/NamedEntity";
-import { PersistenceData } from "src/Model/PersistenceData";
-import { SolvedCommittee } from "src/Model/SolvedCommittee";
+} from "../api";
+import { CommitteeSet } from "../Model/CommitteeSet";
+import { DEFAULT_SETTINGS } from "../Model/Defaults";
+import { stringNotEmpty } from "../Model/ModelUtils";
+import { NamedEntity } from "../Model/NamedEntity";
+import { PersistenceData } from "../Model/PersistenceData";
+import { SolvedCommittee } from "../Model/SolvedCommittee";
 import { utils, WorkBook } from "xlsx";
 import { Constants } from "./ExcelValidation";
 import { v4 as uuid } from "uuid";

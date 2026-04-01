@@ -1,8 +1,8 @@
-import { DistanceMatrix, Person, Settings } from "src/api";
-import { CommitteeSet } from "src/Model/CommitteeSet";
-import { PersistenceData } from "src/Model/PersistenceData";
-import { Solution } from "src/Model/Solution";
-import { SolvedCommittee } from "src/Model/SolvedCommittee";
+import { DistanceMatrix, Person, Settings } from "../api";
+import { CommitteeSet } from "../Model/CommitteeSet";
+import { PersistenceData } from "../Model/PersistenceData";
+import { Solution } from "../Model/Solution";
+import { SolvedCommittee } from "../Model/SolvedCommittee";
 import { read, utils, writeFile } from "xlsx";
 import { parseExcelData } from "./ExcelDataParser";
 import {

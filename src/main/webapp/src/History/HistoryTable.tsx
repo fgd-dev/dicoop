@@ -1,6 +1,6 @@
 import { Divider, Space, Title } from "@mantine/core";
-import { CommitteeSet } from "src/Model/CommitteeSet";
-import SolutionTable from "src/Solution/SolutionTable";
+import { CommitteeSet } from "../Model/CommitteeSet";
+import SolutionTable from "../Solution/SolutionTable";
 
 type HistoryTableProps = {
   history: Array<CommitteeSet>;

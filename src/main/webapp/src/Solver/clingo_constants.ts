@@ -1,5 +1,5 @@
-import { SolverOptions } from "src/api";
-import { sanitizeName } from "src/Participant/ParticipantsTools";
+import { SolverOptions } from "../api";
+import { sanitizeName } from "../Participant/ParticipantsTools";
 
 export const MAIN_MODEL = (target: number): string => `
 %%%%%%%%%%%%%%%%%

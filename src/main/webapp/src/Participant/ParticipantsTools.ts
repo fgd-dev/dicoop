@@ -1,5 +1,5 @@
-import { Person } from "src/api";
-import { NamedEntity } from "src/Model/NamedEntity";
+import { Person } from "../api";
+import { NamedEntity } from "../Model/NamedEntity";
 
 const getSkills = (p: Person) =>
   [...(p.skills ?? []), ...(p.requiredSkills ?? [])] as Array<NamedEntity>;

@@ -16,8 +16,8 @@ import { useForm } from "@mantine/hooks";
 import { CheckIcon } from "@primer/octicons-react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { DistanceMatrix, Person } from "src/api";
-import { NamedEntity } from "src/Model/NamedEntity";
+import { DistanceMatrix, Person } from "../api";
+import { NamedEntity } from "../Model/NamedEntity";
 import "./ParticipantsTable.css";
 import {
   getSortedAvailabilitiesFromParticipants,

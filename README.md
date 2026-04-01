@@ -4,7 +4,7 @@ DICOOP (DIstributing evaluators in CertificatiOn Organized by Peers) is a quasi-
 
 Ideal solutions to these problems can be extremely slow, but approximations are fast and often good enough for real-world purposes.
 
-This application was conceived in the framework of a collaboration between different researchers: Sylvaine Lemeilleur and Nicolas Paget (CIRAD, Montpellier, France), Abdallah Saffidine and Cecilia Xifei Ni (Computer Science and Engineering, University of New South Wales, Sydney, Australia) and Nathanaël Barrot (Kyushu University, Japan), as well as the computer development realized by Fabrice Dominguez (fgd-dev).
+This application was conceived in the framework of a collaboration between different researchers: Sylvaine Lemeilleur and Nicolas Paget (CIRAD, Montpellier, France), Abdallah Saffidine and Cecilia Xifei Ni (Computer Science and Engineering, University of New South Wales, Sydney, Australia) and Nathanael Barrot (Kyushu University, Japan), as well as the computer development realized by Fabrice Dominguez (fgd-dev).
 
 It follows various requests from civil society organizations in Morocco and France and has received support from the French Development Agency under the project "Institutional Innovations for Organic Agriculture in Africa", coordinated by Afronet and in which CIRAD is a partner.
 
@@ -43,9 +43,9 @@ The application can be packaged using:
 ```
 
 It produces the `quarkus-run.jar` file in the `build/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
+Be aware that it's not an _uber-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
 
-If you want to build an _über-jar_, execute the following command:
+If you want to build an _uber-jar_, execute the following command:
 
 ```shell script
 ./gradlew build -Dquarkus.package.type=uber-jar
@@ -71,73 +71,70 @@ You can then execute your native executable with: `./build/dicoop-1.0.0-SNAPSHOT
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/gradle-tooling.
 
-## UI informations and available Scripts
+## Frontend (Web UI)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project uses [Vite](https://vitejs.dev/) + [pnpm](https://pnpm.io/) for the frontend build system.
 
-In the webapp project directory, you can run:
+### Requirements
 
-### `npm start`
+- Node.js 18+
+- pnpm (install with: `npm install -g pnpm`)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Running the frontend
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+In the `src/main/webapp` directory:
 
-### `npm test`
+```shell script
+cd src/main/webapp
+pnpm install
+pnpm dev
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The app will be available at [http://localhost:5173](http://localhost:5173).
 
-### `npm run build`
+### Build commands
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start development server |
+| `pnpm build` | Build for production (output to `dist`) |
+| `pnpm prod` | Build and copy to Quarkus resources |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Building the full application
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+To build the complete application (backend + frontend):
 
-### `npm run eject`
+```shell script
+./gradlew build
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+This will:
+1. Build the Java/Quarkus backend
+2. Build the Vite frontend
+3. Copy the frontend assets to `src/main/resources/META-INF/resources`
 
 ## OpenAPI generator
 
-To refresh the API client while the server is running in dev mode "npm run api" that runs:
-rm -rf src/api
-npx openapi-generator-cli generate -i http://localhost:8080/q/openapi -g typescript-axios -o src/api --skip-validate-spec
+To refresh the API client while the server is running in dev mode:
 
-## npm maintenance
+```shell script
+cd src/main/webapp
+pnpm api
+```
+
+This runs:
+```shell script
+openapi-generator-cli generate -i http://localhost:8080/q/openapi -g typescript-axios -o src/api --skip-validate-spec
+```
+
+## pnpm maintenance
 
 To discover dependencies that are out of date:
 ```console
-npm outdated
+pnpm outdated
 ```
 
-To perform safe dependency upgrades:
+To update dependencies:
 ```console
-npm update
-```
-
-To upgrade to the latest major version of a package:
-```console
-npm install <packagename>@latest
-```
-
-To upgrade all dependencies to their latest major versions:
-```console
-npx npm-check-updates -u
-```
-and
-```console
-npm install
+pnpm update
 ```
