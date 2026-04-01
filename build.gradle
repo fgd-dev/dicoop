@@ -3,7 +3,7 @@ plugins {
     id 'io.quarkus' version '3.34.1'
 }
 
-version = '1.14.1'
+version = '1.14.2'
 
 repositories {
     mavenCentral()
