@@ -67,10 +67,10 @@ function ParticipantsTable({
       name: (value) => value.trim().length > 0,
     },
   });
-  const [locations, setLocations] = useState<Array<string>>([]);
-  const [skills, setSkills] = useState<Array<string>>([]);
-  const [availabilities, setAvailabilities] = useState<Array<string>>([]);
-  const [vetoes, setVetoes] = useState<Array<string>>([]);
+  const [locations] = useState<Array<string>>([]);
+  const [skills] = useState<Array<string>>([]);
+  const [availabilities] = useState<Array<string>>([]);
+  const [vetoes] = useState<Array<string>>([]);
 
   const createParticipant = () => {
     editParticipant({} as Person);
@@ -83,22 +83,8 @@ function ParticipantsTable({
         .map((p) => p.location?.name ?? "")
         .filter((l) => l && l.length > 0)
     );
-    // adding the locations from the distances
     distances.locations?.forEach((l) =>
       locationsFromParticipantsAndDistances.add(l)
-    );
-    setLocations(Array.from(locationsFromParticipantsAndDistances).sort());
-    // initialize the skills with the existing ones in participants
-    setSkills(getSortedSkillsFromParticipants(participants));
-    // initialize the availability with the existing ones in participants
-    setAvailabilities(getSortedAvailabilitiesFromParticipants(participants));
-    // initialize the vetoes with the existing names in participants
-    setVetoes(
-      Array.from(
-        new Set(
-          participants.map((p) => p.name ?? "").filter((l) => l && l.length > 0)
-        )
-      ).sort()
     );
   };
 
@@ -203,12 +189,8 @@ function ParticipantsTable({
             label={t("participant.location")}
             placeholder={t("participant.locationPlaceholder")}
             data={locations}
-            creatable
             searchable
             clearable
-            clearButtonLabel={t("participant.clearButtonLabel")}
-            getCreateLabel={(query) => `+ Create ${query}`}
-            onCreate={(query) => setLocations((current) => [...current, query])}
             value={participantForm.values.location}
             onChange={(value) =>
               participantForm.setFieldValue("location", value ?? "")
@@ -220,11 +202,7 @@ function ParticipantsTable({
             data={skills}
             placeholder={t("participant.skillsPlaceholder")}
             searchable
-            creatable
             clearable
-            clearButtonLabel={t("participant.clearButtonLabel")}
-            getCreateLabel={(query) => `+ Create ${query}`}
-            onCreate={(query) => setSkills((current) => [...current, query])}
             value={participantForm.values.skills}
             onChange={(values) =>
               participantForm.setFieldValue("skills", values)
@@ -233,20 +211,14 @@ function ParticipantsTable({
           />
           <Space h="lg" />
           <MultiSelect
-            label={t("participant.availability")}
-            data={availabilities}
-            placeholder={t("participant.availabilityPlaceholder")}
+            label={t("participant.vetoes")}
+            data={vetoes}
+            placeholder={t("participant.vetoesPlaceholder")}
             searchable
-            creatable
             clearable
-            clearButtonLabel={t("participant.clearButtonLabel")}
-            getCreateLabel={(query) => `+ Create ${query}`}
-            onCreate={(query) =>
-              setAvailabilities((current) => [...current, query])
-            }
-            value={participantForm.values.availability}
+            value={participantForm.values.vetoes}
             onChange={(values) =>
-              participantForm.setFieldValue("availability", values)
+              participantForm.setFieldValue("vetoes", values)
             }
             styles={multiSelectStyles}
           />
@@ -258,13 +230,7 @@ function ParticipantsTable({
                 data={skills}
                 placeholder={t("participant.requiredSkillsPlaceholder")}
                 searchable
-                creatable
                 clearable
-                clearButtonLabel={t("participant.clearButtonLabel")}
-                getCreateLabel={(query) => `+ Create ${query}`}
-                onCreate={(query) =>
-                  setSkills((current) => [...current, query])
-                }
                 value={participantForm.values.requiredSkills}
                 onChange={(values) =>
                   participantForm.setFieldValue("requiredSkills", values)
@@ -275,18 +241,14 @@ function ParticipantsTable({
           )}
           <Space h="lg" />
           <MultiSelect
-            label={t("participant.vetoes")}
-            data={vetoes}
-            placeholder={t("participant.vetoesPlaceholder")}
+            label={t("participant.availability")}
+            data={availabilities}
+            placeholder={t("participant.availabilityPlaceholder")}
             searchable
-            creatable
             clearable
-            clearButtonLabel={t("participant.clearButtonLabel")}
-            getCreateLabel={(query) => `+ Create ${query}`}
-            onCreate={(query) => setVetoes((current) => [...current, query])}
-            value={participantForm.values.vetoes}
+            value={participantForm.values.availability}
             onChange={(values) =>
-              participantForm.setFieldValue("vetoes", values)
+              participantForm.setFieldValue("availability", values)
             }
             styles={multiSelectStyles}
           />
