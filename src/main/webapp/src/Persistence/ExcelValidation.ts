@@ -2,7 +2,7 @@ export const Constants = {
   SETTINGS: "Settings",
   PARTICIPANTS: "Participants",
   SOLUTION: "Solution",
-  HISTORY: "History",
+  HISTORY: "HistoryData",
   DISTANCES: "Distances",
 
   SETTING_NUMBER_OF_PRO: "Number of pro participants",
