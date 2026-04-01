@@ -1,5 +1,5 @@
-import { ActionIcon, Center, Group, Menu, Modal } from "@mantine/core";
-import { BookOpenIcon, DotsThreeVerticalIcon, GithubLogoIcon, QuestionMarkIcon } from "@phosphor-icons/react";
+import { ActionIcon, Group, Menu, Modal } from "@mantine/core";
+import { BookOpenIcon, GearIcon, GithubLogoIcon, QuestionMarkIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -9,50 +9,66 @@ export default function HeaderMenu() {
     en: { nativeName: "English" },
     fr: { nativeName: "Français" },
   };
-  const centerIconStyle = {
+  const iconStyle = {
     color: "black",
+    display: "inline-flex",
+  };
+  const iconButtonStyle = {
+    border: "none",
+    background: "transparent",
+    cursor: "pointer",
+    padding: "4px",
+    borderRadius: "4px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "background-color 0.2s",
   };
   const [aboutOpened, setAboutOpened] = useState(false);
   return (
     <>
-      <Group mr={8} style={{ marginLeft: "auto" }}>
+      <Group mr={8} gap="xs" style={{ marginLeft: "auto" }}>
         <button
           title={t("settingsMenu.about")}
-          style={{
-            border: "none",
-            background: "none",
-            cursor: "pointer",
-          }}
+          style={iconButtonStyle}
           onClick={() => setAboutOpened(true)}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#e0e0e0")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
         >
-          <Center style={centerIconStyle}>
-            <QuestionMarkIcon size={26} weight="bold" />
-          </Center>
+          <QuestionMarkIcon size={26} weight="bold" style={iconStyle} />
         </button>
         <a
           href={t("settingsMenu.guideFileName")}
           target="_blank"
           rel="noreferrer"
           title={t("settingsMenu.guide")}
+          style={iconButtonStyle}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#e0e0e0")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
         >
-          <Center style={centerIconStyle}>
-            <BookOpenIcon size={26} weight="bold" />
-          </Center>
+          <BookOpenIcon size={26} weight="bold" style={iconStyle} />
         </a>
         <a
           href="https://github.com/fgd-dev/dicoop"
           target="_blank"
           rel="noreferrer"
           title={t("settingsMenu.sourceCode")}
+          style={iconButtonStyle}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#e0e0e0")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
         >
-          <Center style={centerIconStyle}>
-            <GithubLogoIcon size={26} weight="bold" />
-          </Center>
+          <GithubLogoIcon size={26} weight="bold" style={iconStyle} />
         </a>
         <Menu shadow="md" width={150}>
           <Menu.Target>
-            <ActionIcon title={t("settingsMenu.title")} variant="subtle" color="dark">
-              <DotsThreeVerticalIcon size={26} weight="bold" />
+            <ActionIcon 
+              title={t("settingsMenu.title")} 
+              variant="subtle" 
+              color="gray" 
+              size="lg"
+              style={{ padding: "4px" }}
+            >
+              <GearIcon size={24} weight="bold" />
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
@@ -87,9 +103,8 @@ export default function HeaderMenu() {
             target="_blank"
             rel="noreferrer"
             title={t("settingsMenu.sourceCode")}
-            style={centerIconStyle}
           >
-            <GithubLogoIcon size={26} weight="bold" />
+            <GithubLogoIcon size={26} weight="bold" style={iconStyle} />
           </a>
         </p>
       </Modal>
