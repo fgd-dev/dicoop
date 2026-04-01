@@ -1,6 +1,5 @@
 import {
   Checkbox,
-  Col,
   Container,
   Grid,
   InputWrapper,
@@ -45,7 +44,7 @@ function SolutionSettingsForm({
     <div style={{ position: "relative", width: "100%" }}>
       <LoadingOverlay visible={isSolving} />
       <Grid>
-        <Col span={6}>
+        <Grid.Col span={6}>
           <Container>
             <InputWrapper
               id="nbProParticipants"
@@ -173,8 +172,8 @@ function SolutionSettingsForm({
 
             <Space h="lg" />
           </Container>
-        </Col>
-        <Col span={6}>
+        </Grid.Col>
+        <Grid.Col span={6}>
           <InputWrapper
             id="nbRotationsToReinspect"
             label={t("settings.nbRotations")}
@@ -322,7 +321,7 @@ function SolutionSettingsForm({
           />
 
           <Space h="lg" />
-        </Col>
+        </Grid.Col>
       </Grid>
     </div>
   );

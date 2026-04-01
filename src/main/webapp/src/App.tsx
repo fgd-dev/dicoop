@@ -5,7 +5,6 @@ import {
   Drawer,
   Group,
   Header,
-  Navbar,
   Radio,
   RadioGroup,
   Space,
@@ -434,7 +433,7 @@ function App() {
       <AppShell
         padding="md"
         navbar={
-          <Navbar width={{ base: 300 }} height={500} p="xs">
+          <AppShell.Navbar width={{ base: 300 }} p="xs">
             <div>
               <input
                 style={{ display: "none" }}
@@ -514,10 +513,10 @@ function App() {
                 </>
               )}
             </div>
-          </Navbar>
+            </AppShell.Navbar>
         }
         header={
-          <Header height={120} p="xs">
+          <AppShell.Header height={120} p="xs">
             <div
               style={{ display: "flex", alignItems: "center", height: "100%" }}
             >
@@ -530,7 +529,7 @@ function App() {
               </div>
               <HeaderMenu />
             </div>
-          </Header>
+          </AppShell.Header>
         }
         styles={(theme) => ({
           main: {

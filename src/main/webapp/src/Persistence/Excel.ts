@@ -119,7 +119,13 @@ export function excelExport(
     distancesSheet.addRow(line);
   });
 
-  workbook.xlsx.writeFile("dicoop-export.xlsx");
+  workbook.xlsx.writeBuffer().then((buffer) => {
+    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "dicoop-export.xlsx";
+    link.click();
+  });
 }
 
 const exportCommittees = (

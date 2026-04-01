@@ -12,7 +12,7 @@ import {
   Table,
   TextInput,
 } from "@mantine/core";
-import { useForm } from "@mantine/hooks";
+import { useForm } from "@mantine/form";
 import { CheckIcon } from "@primer/octicons-react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
