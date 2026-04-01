@@ -4,7 +4,7 @@
 <svg xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="521px" height="511px" viewBox="-0.5 -0.5 521 511" style="background-color:white">
     <defs/>
-    <g stroke-width="3">
+    <g stroke-width="6">
         <ellipse cx="180" cy="470" rx="40" ry="40" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
         <ellipse cx="40" cy="190" rx="40" ry="40" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
         <ellipse cx="480" cy="310" rx="40" ry="40" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
