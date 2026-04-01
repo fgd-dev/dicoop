@@ -1,10 +1,5 @@
 import { ActionIcon, Center, Group, Menu, Modal } from "@mantine/core";
-import {
-  BookIcon,
-  GearIcon,
-  MarkGithubIcon,
-  QuestionIcon,
-} from "@primer/octicons-react";
+import { BookOpenIcon, GearIcon, GithubLogoIcon, QuestionMarkIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -31,7 +26,7 @@ export default function HeaderMenu() {
           onClick={() => setAboutOpened(true)}
         >
           <Center style={centerIconStyle}>
-            <QuestionIcon size={26} />
+            <QuestionMarkIcon size={26} weight="bold" />
           </Center>
         </button>
         <a
@@ -41,7 +36,7 @@ export default function HeaderMenu() {
           title={t("settingsMenu.guide")}
         >
           <Center style={centerIconStyle}>
-            <BookIcon size={26} />
+            <BookOpenIcon size={26} weight="bold" />
           </Center>
         </a>
         <a
@@ -51,14 +46,14 @@ export default function HeaderMenu() {
           title={t("settingsMenu.sourceCode")}
         >
           <Center style={centerIconStyle}>
-            <MarkGithubIcon size={26} />
+            <GithubLogoIcon size={26} weight="bold" />
           </Center>
         </a>
         <Menu shadow="md" width={150}>
           <Menu.Target>
             <ActionIcon title={t("settingsMenu.title")}>
               <Center style={centerIconStyle}>
-                <GearIcon size={26} />
+                <GearIcon size={26} weight="bold" />
               </Center>
             </ActionIcon>
           </Menu.Target>
@@ -96,7 +91,7 @@ export default function HeaderMenu() {
             title={t("settingsMenu.sourceCode")}
             style={centerIconStyle}
           >
-            <MarkGithubIcon size={26} />
+            <GithubLogoIcon size={26} weight="bold" />
           </a>
         </p>
       </Modal>

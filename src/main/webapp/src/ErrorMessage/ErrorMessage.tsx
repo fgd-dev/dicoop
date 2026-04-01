@@ -1,6 +1,6 @@
 import { Modal, ThemeIcon } from "@mantine/core";
 import { useErrorMessage } from "./ErrorMessageContext";
-import { AlertIcon } from "@primer/octicons-react";
+import { WarningIcon } from "@phosphor-icons/react";
 
 export default function ErrorMessage() {
   const { state, closeErrorMessage } = useErrorMessage();
@@ -11,7 +11,7 @@ export default function ErrorMessage() {
       title={
         <>
           <ThemeIcon color="red">
-            <AlertIcon />
+            <WarningIcon />
           </ThemeIcon>
           &nbsp;
           <b>{state.title}</b>
