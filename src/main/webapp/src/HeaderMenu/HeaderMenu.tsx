@@ -1,4 +1,4 @@
-import { ActionIcon, Center, Group, Menu, Modal } from "@mantine/core";
+import { ActionIcon, Center, Group, Modal } from "@mantine/core";
 import {
   BookIcon,
   GearIcon,
@@ -18,6 +18,7 @@ export default function HeaderMenu() {
     color: "black",
   };
   const [aboutOpened, setAboutOpened] = useState(false);
+  const [menuOpened, setMenuOpened] = useState(false);
   return (
     <>
       <Group mr={8} style={{ marginLeft: "auto" }}>
@@ -54,27 +55,53 @@ export default function HeaderMenu() {
             <MarkGithubIcon size={26} />
           </Center>
         </a>
-        <Menu trigger="hover">
-          <Menu.Target>
-            <ActionIcon title={t("settingsMenu.title")}>
-              <Center style={centerIconStyle}>
-                <GearIcon size={26} />
-              </Center>
-            </ActionIcon>
-          </Menu.Target>
-          <Menu.Label>{t("settingsMenu.language")}</Menu.Label>
-          {Object.keys(languages).map((lng) => (
-            <Menu.Item
-              key={lng}
-              onClick={() => i18n.changeLanguage(lng)}
+        <div style={{ position: "relative" }}>
+          <ActionIcon 
+            title={t("settingsMenu.title")}
+            onClick={() => setMenuOpened(!menuOpened)}
+          >
+            <Center style={centerIconStyle}>
+              <GearIcon size={26} />
+            </Center>
+          </ActionIcon>
+          {menuOpened && (
+            <div
               style={{
-                fontWeight: i18n.resolvedLanguage === lng ? "bold" : "normal",
+                position: "absolute",
+                top: "100%",
+                right: 0,
+                background: "white",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                padding: "8px",
+                zIndex: 1000,
+                minWidth: "120px",
               }}
             >
-              {languages[lng].nativeName}
-            </Menu.Item>
-          ))}
-        </Menu>
+              <div style={{ fontWeight: "bold", padding: "4px 8px" }}>
+                {t("settingsMenu.language")}
+              </div>
+              {Object.keys(languages).map((lng) => (
+                <div
+                  key={lng}
+                  onClick={() => {
+                    i18n.changeLanguage(lng);
+                    setMenuOpened(false);
+                  }}
+                  style={{
+                    padding: "4px 8px",
+                    cursor: "pointer",
+                    fontWeight: i18n.resolvedLanguage === lng ? "bold" : "normal",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#f0f0f0")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                >
+                  {languages[lng].nativeName}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </Group>
       <Modal
         size="75%"
