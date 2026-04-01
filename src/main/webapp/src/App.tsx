@@ -283,14 +283,18 @@ function App() {
     return participants;
   };
 
-  const buildAxiosErrorMessage = (error: any): string => {
-    const details = error.response?.data?.details;
-    const message = error.message;
-    if (details) {
-      return message + ": " + details;
-    } else {
-      return message;
+  const buildFetchErrorMessage = (error: any): string => {
+    console.error("API Error:", error);
+    if (error instanceof Response) {
+      return `HTTP ${error.status}: ${error.statusText}`;
     }
+    if (error instanceof Error) {
+      return error.message;
+    }
+    if (typeof error === 'string') {
+      return error;
+    }
+    return JSON.stringify(error);
   };
 
   const startSolving = () => {
@@ -320,9 +324,9 @@ function App() {
         .finally(() => setIsSolving(false));
     } else {
       committeeSolutionResourceApi
-        .apiCommitteeSolutionSolvePost(options)
+        .apiCommitteeSolutionSolvePost({ solverOptions: options })
         .then((resp) => {
-          const solutionId = resp.data.id ?? "ID_ERROR";
+          const solutionId = resp.id ?? "ID_ERROR";
           const initializedSolution = UNDEFINED_SOLUTION;
           initializedSolution.id = solutionId;
           initializedSolution.solverStatus = "INITIALIZING";
@@ -335,24 +339,35 @@ function App() {
           setIsSolving(false);
           showErrorMessage(
             t("solverStartingError"),
-            buildAxiosErrorMessage(error)
+            buildFetchErrorMessage(error)
           );
         });
     }
   };
 
   const stopSolving = () => {
-    if (solver !== "clingo") {
+    if (solver !== "clingo" && committeeSolution.id) {
       committeeSolutionResourceApi
-        .apiCommitteeSolutionStopSolvingIdGet(committeeSolution.id)
-        .then(() => {
+        .apiCommitteeSolutionStopSolvingIdGetRaw({ id: committeeSolution.id })
+        .then((res) => {
           setIsSolving(false);
         })
-        .catch((error) => {
+        .catch((error: any) => {
+          console.error("Stop solving error:", error);
           setIsSolving(false);
+          let errorMessage = "Unknown error";
+          if (error instanceof TypeError && error.message.includes("JSON")) {
+            errorMessage = "Backend returned plain text instead of JSON";
+          } else if (error instanceof Response) {
+            errorMessage = `HTTP ${error.status}: ${error.statusText}`;
+          } else if (error instanceof Error) {
+            errorMessage = error.message;
+          } else if (typeof error === 'string') {
+            errorMessage = error;
+          }
           showErrorMessage(
             t("solverStoppingError"),
-            buildAxiosErrorMessage(error)
+            errorMessage
           );
         });
     }
@@ -362,10 +377,10 @@ function App() {
     setSolutionTabDisabled(false);
     setActiveTabKey(3);
     committeeSolutionResourceApi
-      .apiCommitteeSolutionIdGet(id)
+      .apiCommitteeSolutionIdGet({ id })
       .then((res) => {
-        setCommitteeSolution(Solution.fromCommitteeSolution(res.data));
-        if (res.data.solverStatus === "SOLVING_ACTIVE") {
+        setCommitteeSolution(Solution.fromCommitteeSolution(res));
+        if (res.solverStatus === "SOLVING_ACTIVE") {
           setTimeout(() => {
             refreshSolution(id);
           }, 2000);
@@ -377,7 +392,7 @@ function App() {
         setIsSolving(false);
         showErrorMessage(
           t("solverRefreshingError"),
-          buildAxiosErrorMessage(error)
+          buildFetchErrorMessage(error)
         );
       });
   };
