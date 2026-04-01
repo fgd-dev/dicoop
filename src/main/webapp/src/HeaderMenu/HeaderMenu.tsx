@@ -1,5 +1,5 @@
 import { ActionIcon, Center, Group, Menu, Modal } from "@mantine/core";
-import { BookOpenIcon, GearIcon, GithubLogoIcon, QuestionMarkIcon } from "@phosphor-icons/react";
+import { BookOpenIcon, GithubLogoIcon, ListDotsIcon, QuestionMarkIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -53,7 +53,7 @@ export default function HeaderMenu() {
           <Menu.Target>
             <ActionIcon title={t("settingsMenu.title")}>
               <Center style={centerIconStyle}>
-                <GearIcon size={26} weight="bold" />
+                <ListDotsIcon size={26} weight="bold" />
               </Center>
             </ActionIcon>
           </Menu.Target>
