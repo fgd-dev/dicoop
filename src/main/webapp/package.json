@@ -8,14 +8,13 @@
     "build": "vite build",
     "preview": "vite preview",
     "prod": "vite build && rsync -a dist/* ../resources/META-INF/resources",
-    "api": "openapi-generator-cli generate -i http://localhost:8080/q/openapi -g typescript-axios -o src/api --skip-validate-spec"
+    "api": "openapi-generator generate -i http://localhost:8080/q/openapi -g typescript-fetch -o src/api --skip-validate-spec"
   },
   "dependencies": {
     "@mantine/core": "^4.2.12",
     "@mantine/hooks": "^4.2.12",
     "@mantine/notifications": "^4.2.12",
     "@primer/octicons-react": "^17.3.0",
-    "axios": "^1.7.9",
     "i18next": "^24.2.2",
     "i18next-browser-languagedetector": "^8.0.4",
     "i18next-http-backend": "^3.0.2",

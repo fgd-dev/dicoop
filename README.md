@@ -124,8 +124,10 @@ pnpm api
 
 This runs:
 ```shell script
-openapi-generator-cli generate -i http://localhost:8080/q/openapi -g typescript-axios -o src/api --skip-validate-spec
+openapi-generator generate -i http://localhost:8080/q/openapi -g typescript-fetch -o src/api --skip-validate-spec --additional-properties=typescriptVersion=5.7
 ```
+
+Note: Uses `typescript-fetch` instead of `typescript-axios` to avoid extra dependency.
 
 ## pnpm maintenance
 
