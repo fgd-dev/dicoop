@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { ErrorMessageProvider } from "./ErrorMessage/ErrorMessageContext";
+import "@mantine/core/styles.css";
 import "./index.css";
 
 // import i18n (needs to be bundled ;))
