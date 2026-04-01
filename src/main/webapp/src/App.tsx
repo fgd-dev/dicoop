@@ -506,7 +506,7 @@ function App() {
             <div
               style={{ display: "flex", alignItems: "center", height: "100%" }}
             >
-              <DicoopLogo className="dicoop-logo" />
+              <img src={DicoopLogo} className="dicoop-logo" alt="DICOOP" />
               <div className="dicoop-title">
                 <h1>{t("appName")}</h1>
                 <span>
