@@ -12,11 +12,19 @@ It led to a first scientific communication: Barrot, N., Lemeilleur, S., Paget, N
 
 ## Running the application with docker
 
-For instance if you want to run Dicoop locally for the version v1.13.6
+For instance if you want to run Dicoop locally for the version v1.14.3
 
 ```shell script
-docker run -p 8080:8080 fgd99/dicoop:v1.13.6
+docker run -p 8080:8080 fgd99/dicoop:v1.14.3
 ```
+
+Or pull the latest version:
+
+```shell script
+docker run -p 8080:8080 fgd99/dicoop:latest
+```
+
+More images available at [Docker Hub](https://hub.docker.com/r/fgd99/dicoop).
 
 ## Technical points
 
@@ -77,7 +85,7 @@ This project uses [Vite](https://vitejs.dev/) + [pnpm](https://pnpm.io/) for the
 
 ### Requirements
 
-- Node.js 18+
+- Node.js 20+
 - pnpm (install with: `npm install -g pnpm`)
 
 ### Running the frontend
