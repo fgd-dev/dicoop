@@ -67,17 +67,17 @@ function ParticipantsTable({
       name: (value) => value.trim().length > 0,
     },
   });
-  const [locations] = useState<Array<string>>([]);
-  const [skills] = useState<Array<string>>([]);
-  const [availabilities] = useState<Array<string>>([]);
-  const [vetoes] = useState<Array<string>>([]);
+  const [locations, setLocations] = useState<Array<string>>([]);
+  const [skills, setSkills] = useState<Array<string>>([]);
+  const [availabilities, setAvailabilities] = useState<Array<string>>([]);
+  const [vetoes, setVetoes] = useState<Array<string>>([]);
 
   const createParticipant = () => {
+    setDefaultSelectData();
     editParticipant({} as Person);
   };
 
   const setDefaultSelectData = () => {
-    // initialize the locations with the existing ones in participants
     const locationsFromParticipantsAndDistances = new Set(
       participants
         .map((p) => p.location?.name ?? "")
@@ -86,10 +86,29 @@ function ParticipantsTable({
     distances.locations?.forEach((l) =>
       locationsFromParticipantsAndDistances.add(l)
     );
+    setLocations(Array.from(locationsFromParticipantsAndDistances).sort());
+    
+    const skillsSet = new Set<string>();
+    participants.forEach((p) => {
+      p.skills?.forEach((s) => skillsSet.add(s.name ?? ""));
+    });
+    setSkills(Array.from(skillsSet).sort());
+    
+    const availSet = new Set<string>();
+    participants.forEach((p) => {
+      p.availability?.forEach((a) => availSet.add(a.name ?? ""));
+    });
+    setAvailabilities(Array.from(availSet).sort());
+    
+    const vetoSet = new Set<string>();
+    participants.forEach((p) => {
+      p.vetoes?.forEach((v) => vetoSet.add(v.name ?? ""));
+      vetoSet.add(p.name ?? "");
+    });
+    setVetoes(Array.from(vetoSet).sort());
   };
 
   const editParticipant = (participant: Person) => {
-    setDefaultSelectData();
     // Setting the form values from the participant
     participantForm.setFieldValue("key", participant?.name ?? "");
     participantForm.setFieldValue("name", participant?.name ?? "");
