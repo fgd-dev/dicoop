@@ -123,7 +123,8 @@ function parseSolution(sheetData: any[][]): CommitteeSet {
     const firstCell = rowData[0];
     if (firstCell !== Constants.SOLUTION_EVALUATED_PERSON) {
       if (firstCell === Constants.SOLUTION) {
-        set.date = rowData[1];
+        const dateValue = rowData[1];
+        set.date = dateValue instanceof Date ? dateValue : new Date(dateValue);
         isWellFormed = true;
       } else if (isWellFormed) {
         const evaluatedPerson = {

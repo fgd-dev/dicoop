@@ -12,7 +12,7 @@ function HistoryTable({ history }: HistoryTableProps) {
       {history.map((committees) => (
         <div key={committees.id}>
           <Title order={3}>
-            <>Solution {committees.date}</>
+            Solution {committees.date instanceof Date ? committees.date.toLocaleDateString() : committees.date}
           </Title>
           <SolutionTable committees={committees} />
           <Space h="xl" />
