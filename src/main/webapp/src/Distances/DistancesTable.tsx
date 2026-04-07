@@ -11,7 +11,7 @@ function DistancesTable({
   updateDistance,
 }: DistancesTableProps) {
   return (
-    <Table style={{ width: "auto" }}>
+    <Table striped withTableBorder verticalSpacing="sm" horizontalSpacing="sm" style={{ width: "auto" }}>
       <thead>
         <tr>
           <th />

@@ -38,7 +38,7 @@ function SolutionTable({ committees }: SolutionTableProps) {
   );
 
   return (
-    <Table highlightOnHover aria-label="Solution" id="table-basic">
+    <Table striped highlightOnHover withTableBorder verticalSpacing="sm" horizontalSpacing="sm" aria-label="Solution" id="table-basic">
       <thead>
         <tr role="row">
           <th role="columnheader" scope="col">

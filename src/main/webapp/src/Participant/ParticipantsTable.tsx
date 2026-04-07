@@ -327,7 +327,16 @@ function ParticipantsTable({
       <Button type="button" onClick={createParticipant}>
         {t("participant.addAParticipant")}
       </Button>
-      <Table highlightOnHover aria-label="Participants" id="table-basic">
+      <Space h="md" />
+      <Table 
+        striped 
+        highlightOnHover 
+        withTableBorder
+        verticalSpacing="sm"
+        horizontalSpacing="sm"
+        aria-label="Participants" 
+        id="table-basic"
+      >
         <thead>
           <tr role="row">
             <th role="columnheader" scope="col">
