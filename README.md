@@ -1,4 +1,4 @@
-# dicoop Project https://dicoop.app/
+# dicoop Project
 
 DICOOP (DIstributing evaluators in CertificatiOn Organized by Peers) is a quasi-solver for a class of scheduling problems, whose problem is to identify and allocate N peer reviewers to N peer reviews, knowing that other types of reviewers may accompany them (non-pro and external), and so that there is no reciprocity in the review, the team of reviewers has a set of expected skills, and the reviewers change from one year to the next for the same peer in order to maximize knowledge exchange and reduce the risk of tacit agreements. In the interest of fairness among evaluators, distance-to-go options can be chosen.
 
@@ -12,10 +12,10 @@ It led to a first scientific communication: Barrot, N., Lemeilleur, S., Paget, N
 
 ## Running the application with docker
 
-For instance if you want to run Dicoop locally for the version v1.14.3
+For instance if you want to run Dicoop locally for the version v1.14.4
 
 ```shell script
-docker run -p 8080:8080 fgd99/dicoop:v1.14.3
+docker run -p 8080:8080 fgd99/dicoop:v1.14.4
 ```
 
 Or pull the latest version:
