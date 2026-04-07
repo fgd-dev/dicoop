@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Fix for Mantine Tabs active tab - remove dark background */
+.mantine-Tabs-tab[data-active="true"] {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
