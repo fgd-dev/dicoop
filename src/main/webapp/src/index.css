@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Table hover styling */
+.mantine-Table-tr:hover {
+  background-color: #f8f9fa !important;
+}
