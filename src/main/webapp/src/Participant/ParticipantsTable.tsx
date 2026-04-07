@@ -304,6 +304,7 @@ function ParticipantsTable({
           </Group>
         </form>
       </Modal>
+      <Space h="md" />
       <Button type="button" onClick={createParticipant}>
         {t("participant.addAParticipant")}
       </Button>
