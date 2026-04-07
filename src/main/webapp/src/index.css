@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Fix for Mantine Tabs active tab styling */
+.mantine-Tabs-tab[data-active="true"] {
+  background: transparent;
+}
