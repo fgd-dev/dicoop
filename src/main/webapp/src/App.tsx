@@ -522,10 +522,10 @@ function App() {
           <Space h="xl" />
           <Tabs defaultValue="0" onChange={(value) => setActiveTabKey(Number(value))}>
             <Tabs.List>
-              <Tabs.Tab value="0" label={t("tabs.participants")} />
-              <Tabs.Tab value="1" label={t("tabs.distances")} />
-              <Tabs.Tab value="2" label={t("tabs.history")} />
-              <Tabs.Tab value="3" label={t("tabs.solution")} disabled={solutionTabDisabled} />
+              <Tabs.Tab value="0">{t("tabs.participants")}</Tabs.Tab>
+              <Tabs.Tab value="1">{t("tabs.distances")}</Tabs.Tab>
+              <Tabs.Tab value="2">{t("tabs.history")}</Tabs.Tab>
+              <Tabs.Tab value="3" disabled={solutionTabDisabled}>{t("tabs.solution")}</Tabs.Tab>
             </Tabs.List>
             <Tabs.Panel value="0">
               <ParticipantsTable
