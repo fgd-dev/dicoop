@@ -54,8 +54,10 @@ tasks.register("syncVersion") {
         def readme = file("README.md")
         def versionTag = "v$project.version"
         def readmeContent = readme.text
-                .replaceAll(/docker run.*fgd99\/dicoop:v[0-9]+\.[0-9]+\.[0-9]+/, "docker run -p 8080:8080 fgd99/dicoop:$versionTag")
-                .replaceAll(/For instance.*version v[0-9]+\.[0-9]+\.[0-9]+/, "For instance if you want to run Dicoop locally for the version $versionTag")
+                .replaceAll(/docker run -p 8080:8080 fgd99\/dicoop:v\S+/,
+                        "docker run -p 8080:8080 fgd99/dicoop:$versionTag")
+                .replaceAll(/For instance if you want to run Dicoop locally for the version v\S+/,
+                        "For instance if you want to run Dicoop locally for the version $versionTag")
         readme.text = readmeContent
     }
 }
