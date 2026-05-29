@@ -45,11 +45,18 @@ compileTestJava {
     options.encoding = 'UTF-8'
 }
 
-tasks.register("syncPackageVersion") {
+tasks.register("syncVersion") {
     doLast {
         def packageJson = file("src/main/webapp/package.json")
         def content = packageJson.text.replaceFirst(/"version":\s*".*?"/, "\"version\": \"$project.version\"")
         packageJson.text = content
+
+        def readme = file("README.md")
+        def versionTag = "v$project.version"
+        def readmeContent = readme.text
+                .replaceAll(/docker run.*fgd99\/dicoop:v[0-9]+\.[0-9]+\.[0-9]+/, "docker run -p 8080:8080 fgd99/dicoop:$versionTag")
+                .replaceAll(/For instance.*version v[0-9]+\.[0-9]+\.[0-9]+/, "For instance if you want to run Dicoop locally for the version $versionTag")
+        readme.text = readmeContent
     }
 }
 
@@ -72,7 +79,7 @@ copyFrontend {
 }
 
 buildFrontend {
-    dependsOn("syncPackageVersion")
+    dependsOn("syncVersion")
 }
 
 assemble.dependsOn("copyFrontend")

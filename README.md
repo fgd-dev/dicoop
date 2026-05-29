@@ -12,10 +12,10 @@ It led to a first scientific communication: Barrot, N., Lemeilleur, S., Paget, N
 
 ## Running the application with docker
 
-For instance if you want to run Dicoop locally for the version v1.14.6
+For instance if you want to run Dicoop locally for the version v1.14.6-SNAPSHOT
 
 ```shell script
-docker run -p 8080:8080 fgd99/dicoop:v1.14.6
+docker run -p 8080:8080 fgd99/dicoop:v1.14.6-SNAPSHOT
 ```
 
 Or pull the latest version:
