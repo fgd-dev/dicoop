@@ -3,8 +3,6 @@ plugins {
     id 'io.quarkus' version '3.34.1'
 }
 
-version = '1.14.6'
-
 repositories {
     mavenCentral()
     mavenLocal()
@@ -32,7 +30,6 @@ configurations.implementation {
 }
 
 group 'fr.cirad'
-version '1.13.0'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -46,6 +43,14 @@ compileJava {
 
 compileTestJava {
     options.encoding = 'UTF-8'
+}
+
+tasks.register("syncPackageVersion") {
+    doLast {
+        def packageJson = file("src/main/webapp/package.json")
+        def content = packageJson.text.replaceFirst(/"version":\s*".*?"/, "\"version\": \"$project.version\"")
+        packageJson.text = content
+    }
 }
 
 tasks.register("buildFrontend", Exec) {
@@ -64,6 +69,10 @@ processResources {
 
 copyFrontend {
     dependsOn("buildFrontend")
+}
+
+buildFrontend {
+    dependsOn("syncPackageVersion")
 }
 
 assemble.dependsOn("copyFrontend")
